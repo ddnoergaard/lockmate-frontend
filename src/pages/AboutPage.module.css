@@ -1,0 +1,177 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+}
+
+.header {
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+}
+
+/* ── Inner width — matches all other sections ── */
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Shared label ── */
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Hero ── */
+.hero {
+  padding: var(--section-pad);
+  padding-bottom: calc(var(--space-lg) * 2);
+}
+
+.heading {
+  font-size: 58px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--text);
+  margin-bottom: var(--space-md);
+}
+
+.sub {
+  font-size: var(--text-base);
+  line-height: 1.75;
+  color: var(--text-sub);
+  max-width: 580px;
+}
+
+/* ── Sections ── */
+.section {
+  padding: var(--section-pad);
+}
+
+.sectionHeading {
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: var(--space-lg);
+}
+
+/* ── Founders ── */
+.founderGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.founderCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.founderPhoto {
+  aspect-ratio: 4 / 3;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.founderPhotoLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+.founderInfo {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.founderName {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.founderRole {
+  font-size: 13px;
+  color: var(--accent-light);
+}
+
+.founderBio {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── Values ── */
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.valueCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.valueCard:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.valueLabel {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.valueBody {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero { padding: 64px 24px; }
+  .section { padding: 64px 24px; }
+  .heading { font-size: 42px; letter-spacing: -1.2px; }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 48px 16px; }
+  .section { padding: 48px 16px; }
+  .heading { font-size: 32px; letter-spacing: -0.8px; }
+  .founderGrid { grid-template-columns: 1fr; }
+  .valuesGrid { grid-template-columns: 1fr; }
+}

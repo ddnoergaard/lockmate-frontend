@@ -1,0 +1,356 @@
+.section {
+  padding: var(--section-pad);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.sectionHead {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.heading {
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* ── Large encryption card ── */
+.encryptCard {
+  grid-column: 1 / 3;
+  background: #1A2E1A;
+  border: 1px solid rgba(61, 112, 52, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.encryptCard::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: 80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(61, 112, 52, 0.25) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.encryptLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 340px;
+  position: relative;
+  z-index: 1;
+}
+
+.encryptTag {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  opacity: 0.7;
+}
+
+.encryptTitle {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+}
+
+.encryptDesc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.learnLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.15s, gap 0.15s;
+  margin-top: 2px;
+}
+
+.learnLink:hover {
+  color: var(--accent-light);
+  gap: 9px;
+}
+
+/* Encryption pills */
+.encryptRight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  min-width: 230px;
+}
+
+.pillDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  flex-shrink: 0;
+}
+
+.pillText {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  flex: 1;
+}
+
+.pillCheck {
+  color: rgba(74, 222, 128, 0.6);
+}
+
+/* ── Feature cards ── */
+.featureCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.featureCard:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.featureTag {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.featureTitle {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+}
+
+.featureDesc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  flex: 1;
+}
+
+.readMoreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: var(--space-sm) 0 0;
+  transition: color 0.15s, gap 0.15s;
+  margin-top: auto;
+}
+
+.readMoreLink:hover {
+  color: var(--accent-light);
+  gap: 9px;
+}
+
+/* ── Vault card ── */
+.vaultCard {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  transition: border-color 0.2s;
+}
+
+.vaultCard:hover {
+  border-color: var(--border-strong);
+}
+
+.vaultLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 440px;
+}
+
+.vaultTitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.6px;
+  line-height: 1.25;
+}
+
+.vaultDesc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-sub);
+}
+
+.vaultRight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+  width: 380px;
+}
+
+.vaultPill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  transition: border-color 0.15s;
+}
+
+.vaultPill:hover {
+  border-color: var(--border-strong);
+}
+
+.vaultPillDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.vaultPillName {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+  flex: 1;
+}
+
+.vaultPillCount {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .section {
+    padding: 64px 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .encryptCard {
+    grid-column: 1 / 3;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .encryptRight {
+    width: 100%;
+  }
+
+  .pill {
+    min-width: unset;
+  }
+
+  .vaultCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .vaultRight {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 48px 16px;
+  }
+
+  .heading {
+    font-size: 28px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .encryptCard {
+    grid-column: 1 / 2;
+  }
+}

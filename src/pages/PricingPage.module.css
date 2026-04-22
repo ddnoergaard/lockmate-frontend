@@ -1,0 +1,690 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+}
+
+.header {
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+}
+
+/* ── Page header ── */
+.pageHead {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 80px 0 64px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── Billing toggle ── */
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-top: 8px;
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-muted);
+  padding: 7px 16px;
+  border-radius: 7px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.toggleActive {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.saveBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+/* ── Plans ── */
+.plansWrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* ── Plan card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+.cardHighlight {
+  background: #1A2E1A;
+  border-color: rgba(139, 191, 117, 0.2);
+}
+
+.cardHighlight:hover {
+  border-color: rgba(139, 191, 117, 0.35);
+}
+
+.popularBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.planName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-sub);
+}
+
+.cardHighlight .planName {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 6px;
+}
+
+.price {
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: -2.5px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.cardHighlight .price {
+  color: #ffffff;
+}
+
+.priceSuffix {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.billedNote {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.planDesc {
+  font-size: 13.5px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.cardHighlight .planDesc {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* CTAs */
+.cardCtas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.primaryCta {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--surface-raised);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  transition: background 0.15s, color 0.15s;
+}
+
+.primaryCta:hover {
+  background: var(--surface-high);
+}
+
+.primaryCtaGreen {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.primaryCtaGreen:hover {
+  background: var(--accent-hover);
+}
+
+.secondaryCta {
+  display: block;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.secondaryCta:hover {
+  color: var(--text-sub);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 20px;
+}
+
+.cardHighlight .divider {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Features */
+.featuresBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.featuresLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-sub);
+}
+
+.cardHighlight .featureItem {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.featureCheck {
+  color: var(--accent-light);
+  flex-shrink: 0;
+}
+
+/* ── Enterprise ── */
+.enterprise {
+  background: #1A2E1A;
+  border: 1px solid rgba(139, 191, 117, 0.18);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.enterpriseName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.enterpriseDesc {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.38);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.enterpriseRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.enterprisePrice {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+.enterpriseBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, gap 0.15s;
+}
+
+.enterpriseBtn:hover {
+  background: #ffffff;
+  gap: 10px;
+}
+
+/* ── FAQ ── */
+.faqWrap {
+  padding: 0 40px 120px;
+  border-top: 1px solid var(--border);
+}
+
+.faqInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 80px;
+  padding-top: 80px;
+}
+
+.faqLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.faqEyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.faqTitle {
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.faqSubtitle {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+.faqContact {
+  color: var(--accent-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+
+.faqContact:hover {
+  opacity: 0.75;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--border);
+}
+
+.faqQuestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.faqQuestion:hover {
+  color: var(--accent-light);
+}
+
+.faqChevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.faqItemOpen .faqChevron {
+  transform: rotate(180deg);
+}
+
+.faqAnswer {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  padding-bottom: 20px;
+}
+
+/* ── No contracts section ── */
+.contractsWrap {
+  border-top: 1px solid var(--border);
+  padding: 0 40px 0;
+}
+
+.contractsInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.contractsLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contractsHeading {
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.contractsBody {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  max-width: 380px;
+}
+
+.contractsCtas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.contractsPrimary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--accent);
+  color: #ffffff;
+  transition: background 0.15s;
+}
+
+.contractsPrimary:hover {
+  background: var(--accent-hover);
+}
+
+.contractsSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-sub);
+  border: 1px solid var(--border-strong);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.contractsSecondary:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+/* Step cards */
+.contractsRight {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.stepCard:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.stepMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.stepNum {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent-light);
+  opacity: 0.7;
+}
+
+.stepTime {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.stepTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.1px;
+}
+
+.stepDesc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .plans {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .enterprise {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .enterpriseRight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .enterpriseBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .faqInner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 56px;
+  }
+
+  .faqLeft {
+    position: static;
+  }
+
+  .contractsInner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 72px 0;
+  }
+
+  .contractsHeading {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 12px 16px 0;
+  }
+
+  .header {
+    top: 12px;
+  }
+
+  .pageHead {
+    padding: 56px 0 48px;
+  }
+
+  .plansWrap {
+    padding: 0 16px 80px;
+  }
+
+  .faqWrap {
+    padding: 0 16px 80px;
+  }
+
+  .contractsWrap {
+    padding: 0 16px;
+  }
+
+  .contractsCtas {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contractsPrimary,
+  .contractsSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

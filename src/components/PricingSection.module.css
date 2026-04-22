@@ -1,0 +1,350 @@
+.section {
+  background: var(--bg);
+  padding: var(--section-pad);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+}
+
+/* ── Left copy ── */
+.copy {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: sticky;
+  top: 100px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.heading {
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.body p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── Right cards ── */
+.cards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.planRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* ── Plan card ── */
+.planCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.planCard:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.planCardDark {
+  background: #1A2E1A;
+  border-color: rgba(61, 112, 52, 0.25);
+}
+
+.planCardDark:hover {
+  background: #1F351F;
+  border-color: rgba(61, 112, 52, 0.4);
+}
+
+.planBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 3px 8px;
+  margin-bottom: var(--space-sm);
+}
+
+.planBadgeDark {
+  color: var(--accent-light);
+  border-color: var(--accent-border);
+  background: var(--accent-subtle);
+}
+
+.planHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.planName {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.planCardDark .planName {
+  color: #ffffff;
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.priceAmount {
+  font-size: 38px;
+  font-weight: 500;
+  letter-spacing: -2px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.planCardDark .priceAmount {
+  color: #ffffff;
+}
+
+.pricePer {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.planDesc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+.planCardDark .planDesc {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: var(--space-sm);
+}
+
+.dividerDark {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+  margin-bottom: var(--space-md);
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.planCardDark .featureItem {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.checkLight {
+  color: var(--accent-light);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.checkDark {
+  color: var(--accent-light);
+  flex-shrink: 0;
+}
+
+.planBtn {
+  width: 100%;
+  padding: 9px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text-sub);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  margin-top: auto;
+}
+
+.planBtn:hover {
+  background: var(--surface-high);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.planBtnDark {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  border-color: transparent;
+}
+
+.planBtnDark:hover {
+  background: #ffffff;
+}
+
+/* ── Enterprise ── */
+.enterprise {
+  background: #1A2E1A;
+  border: 1px solid rgba(61, 112, 52, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.enterpriseLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.enterpriseName {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.enterpriseDesc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.enterpriseRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.enterprisePrice {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+.enterpriseBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.enterpriseBtn:hover {
+  background: #ffffff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .inner {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .copy {
+    flex: none;
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 64px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 48px 16px;
+  }
+
+  .planRow {
+    grid-template-columns: 1fr;
+  }
+
+  .enterprise {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .enterpriseRight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    width: 100%;
+  }
+
+  .enterpriseBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

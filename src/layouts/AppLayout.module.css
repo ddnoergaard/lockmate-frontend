@@ -1,0 +1,247 @@
+/* ── Shell ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 10px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  gap: 4px;
+}
+
+/* ── Org selector ── */
+.orgSelectorWrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.orgSelector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.orgSelector:hover,
+.orgSelectorOpen {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.orgDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--surface-high);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: dropIn 0.12s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.orgDropdownLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 4px 8px 6px;
+}
+
+.orgDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 8px;
+  border-radius: 7px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.orgDropdownItem:hover {
+  background: var(--surface-raised);
+}
+
+.orgDropdownItemActive {
+  background: var(--accent-subtle);
+}
+
+.orgDropdownItemActive:hover {
+  background: var(--accent-subtle);
+}
+
+.orgDropdownAvatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-light);
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.orgDropdownName {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orgDropdownCheck {
+  color: var(--accent-light);
+  flex-shrink: 0;
+}
+
+.orgAvatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-light);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.orgName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orgChevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Nav ── */
+.nav {
+  flex: 1;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-sub);
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+  text-decoration: none;
+}
+
+.navItem:hover {
+  color: var(--text);
+  background: var(--surface-raised);
+}
+
+.navItemActive {
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+  font-weight: 500;
+}
+
+.navItemActive:hover {
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+}
+
+/* ── Bottom section ── */
+.bottomNav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ── Main content ── */
+.content {
+  background: var(--bg);
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.contentFade {
+  animation: contentFadeIn 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}

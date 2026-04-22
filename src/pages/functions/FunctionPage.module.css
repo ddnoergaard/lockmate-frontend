@@ -1,0 +1,368 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Navbar ── */
+.navWrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+}
+
+/* ── Hero ── */
+.heroWrap {
+  padding: var(--section-pad);
+}
+
+.heroInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  min-height: 52vh;
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+
+.heading {
+  font-size: 54px;
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -2px;
+  color: var(--text);
+}
+
+.subheading {
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--text-sub);
+  max-width: 480px;
+}
+
+.heroCtas {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.primaryBtn:hover { background: var(--accent-hover); }
+
+.ghostBtn {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  padding: 10px 4px;
+  transition: color 0.15s;
+}
+
+.ghostBtn:hover { color: var(--text-sub); }
+
+/* ── Hero visual ── */
+.heroVisual {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroGlow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(61,112,52,0.2) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 75% 70%, rgba(61,112,52,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.heroVisualLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Highlight ── */
+.highlightWrap {
+  padding: 0 40px var(--section-pad);
+}
+
+.highlightInner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.highlightCard {
+  background: #1A2E1A;
+  border: 1px solid rgba(61,112,52,0.22);
+  border-radius: var(--radius-lg);
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlightGlow {
+  position: absolute;
+  top: -80px;
+  right: -40px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(61,112,52,0.28) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.highlightContent {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.highlightHeading {
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -1.2px;
+  color: #fff;
+}
+
+.highlightBody {
+  font-size: var(--text-base);
+  line-height: 1.75;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ── Technical brief ── */
+.briefWrap {
+  padding: var(--section-pad);
+}
+
+.briefInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.briefLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: sticky;
+  top: 120px;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.briefDesc {
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--text-sub);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.featureCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.featureCard:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.featureTitle {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.featureBody {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── FAQ ── */
+.faqWrap {
+  padding: 0 40px var(--section-pad);
+  border-top: 1px solid var(--border);
+}
+
+.faqInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  padding-top: 80px;
+}
+
+.faqLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.faqEyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.faqTitle {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.faqSubtitle {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+.faqContact {
+  color: var(--accent-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+
+.faqContact:hover { opacity: 0.75; }
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--border);
+}
+
+.faqQuestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.faqQuestion:hover { color: var(--accent-light); }
+
+.faqChevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.faqItemOpen .faqChevron { transform: rotate(180deg); }
+
+.faqAnswer {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  padding-bottom: 20px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .briefInner { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .briefLeft { position: static; }
+  .faqInner { grid-template-columns: 1fr; gap: 40px; padding-top: 56px; }
+  .faqLeft { position: static; }
+}
+
+@media (max-width: 900px) {
+  .heroInner { grid-template-columns: 1fr; min-height: unset; gap: var(--space-lg); }
+  .heroVisual { display: none; }
+  .heading { font-size: 40px; letter-spacing: -1.2px; }
+  .highlightCard { padding: var(--space-lg); }
+  .highlightHeading { font-size: 30px; }
+  .heroWrap, .highlightWrap, .briefWrap { padding: 64px 24px; }
+  .faqWrap { padding: 0 24px 64px; }
+}
+
+@media (max-width: 640px) {
+  .heroWrap, .highlightWrap, .briefWrap { padding: 48px 16px; }
+  .faqWrap { padding: 0 16px 48px; }
+  .heading { font-size: 32px; letter-spacing: -0.8px; }
+  .featuresGrid { grid-template-columns: 1fr; }
+  .heroCtas { flex-direction: column; align-items: flex-start; }
+}

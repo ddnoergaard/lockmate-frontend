@@ -1,0 +1,172 @@
+.section {
+  padding: var(--section-pad);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* ── Left visual ── */
+.visual {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #111811;
+  border: 1px solid rgba(61, 112, 52, 0.18);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(61, 112, 52, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 75% 70%, rgba(61, 112, 52, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.dotGrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  padding: 32px;
+}
+
+.cell {
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.3s;
+}
+
+.cell:nth-child(3),
+.cell:nth-child(8),
+.cell:nth-child(11),
+.cell:nth-child(16),
+.cell:nth-child(19) {
+  background: rgba(61, 112, 52, 0.18);
+  border-color: rgba(61, 112, 52, 0.3);
+}
+
+.cell:nth-child(5),
+.cell:nth-child(14),
+.cell:nth-child(22) {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: rgba(74, 222, 128, 0.15);
+}
+
+.badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  backdrop-filter: blur(8px);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  flex-shrink: 0;
+}
+
+/* ── Right content ── */
+.content {
+  padding: var(--space-md) 0 var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.heading {
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -1.2px;
+  line-height: 1.12;
+  color: var(--text);
+}
+
+/* ── Points ── */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.point {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border);
+}
+
+.point:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.pointTitle {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.pointBody {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .section {
+    padding: 64px 24px;
+  }
+
+  .inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .content {
+    padding: 0;
+    gap: var(--space-md);
+  }
+
+  .heading {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 48px 16px;
+  }
+}
