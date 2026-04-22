@@ -183,7 +183,7 @@ function InviteCode({ code }: { code: string }) {
   )
 }
 
-function MemberMenu({ email }: { email: string }) {
+function MemberMenu() {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -422,7 +422,7 @@ export default function OrganisationPage() {
                 {m.role}
               </div>
               <span className={styles.memberJoined}>{m.joined}</span>
-              <MemberMenu email={m.email} />
+              <MemberMenu />
             </div>
           ))}
         </div>

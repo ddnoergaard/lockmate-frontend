@@ -4,25 +4,10 @@ import {
   IconUsers,
   IconAlertTriangle,
   IconPlus,
-  IconWorld,
-  IconServer,
-  IconLock,
   IconArrowUp,
   IconArrowDown,
   IconMinus,
 } from '@tabler/icons-react'
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from 'recharts'
 import styles from './DashboardPage.module.css'
 
 /* ── Placeholder data ── */
@@ -34,29 +19,12 @@ const stats = [
   { label: 'Svage adgangskoder',     value: '3',  icon: IconAlertTriangle, warn: true },
 ]
 
-const strengthData = [
-  { name: 'Stærke',   value: 14, color: '#8BBF75' },
-  { name: 'Middel',   value: 7,  color: '#d4a847' },
-  { name: 'Svage',    value: 3,  color: '#e05c5c' },
-]
-const totalPasswords = strengthData.reduce((s, d) => s + d.value, 0)
-const strongPct = Math.round((strengthData[0].value / totalPasswords) * 100)
-
 const vaultDistribution = [
   { name: 'Engineering', value: 9,  color: '#8BBF75' },
   { name: 'Design',      value: 5,  color: '#4A8A40' },
   { name: 'Marketing',   value: 4,  color: '#3D7034' },
   { name: 'Finance',     value: 4,  color: '#2d5426' },
   { name: 'HR',          value: 2,  color: '#1e3a1a' },
-]
-
-const passwordAgeData = [
-  { month: 'Nov', count: 3 },
-  { month: 'Dec', count: 5 },
-  { month: 'Jan', count: 8 },
-  { month: 'Feb', count: 6 },
-  { month: 'Mar', count: 11 },
-  { month: 'Apr', count: 9 },
 ]
 
 const topCredentials = [
@@ -75,25 +43,10 @@ const topVaults = [
   { name: 'HR',          credentials: 2,  members: 1 },
 ]
 
-const typeIcon: Record<string, typeof IconWorld> = {
-  web: IconWorld, server: IconServer, other: IconLock,
-}
-
 const TrendIcon = ({ trend }: { trend: string }) => {
   if (trend === 'up')   return <IconArrowUp   size={12} strokeWidth={2.5} className={styles.trendUp}   />
   if (trend === 'down') return <IconArrowDown size={12} strokeWidth={2.5} className={styles.trendDown} />
   return <IconMinus size={12} strokeWidth={2} className={styles.trendFlat} />
-}
-
-/* ── Custom tooltip ── */
-const ChartTooltip = ({ active, payload }: any) => {
-  if (!active || !payload?.length) return null
-  return (
-    <div className={styles.tooltip}>
-      <span className={styles.tooltipLabel}>{payload[0].name}</span>
-      <span className={styles.tooltipValue}>{payload[0].value}</span>
-    </div>
-  )
 }
 
 export default function DashboardPage() {
