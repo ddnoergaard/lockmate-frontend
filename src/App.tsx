@@ -3,6 +3,8 @@ import PageTransition from './components/PageTransition'
 import HomePage from './pages/HomePage'
 import AuthPage from './pages/AuthPage'
 import RegisterPage from './pages/RegisterPage'
+import OnboardingPage from './pages/OnboardingPage'
+import CreateOrganisationPage from './pages/CreateOrganisationPage'
 import PricingPage from './pages/PricingPage'
 import AboutPage from './pages/AboutPage'
 import FunctionPage from './pages/functions/FunctionPage'
@@ -22,7 +24,9 @@ function App() {
         {/* Public — each wrapped individually so the shell never animates */}
         <Route path="/"         element={<PageTransition><HomePage /></PageTransition>} />
         <Route path="/login"    element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
-        <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+        <Route path="/register"   element={<PageTransition><RegisterPage /></PageTransition>} />
+        <Route path="/onboarding" element={<PageTransition><OnboardingPage /></PageTransition>} />
+        <Route path="/onboarding/organisation" element={<PageTransition><CreateOrganisationPage /></PageTransition>} />
         <Route path="/pricing"  element={<PageTransition><PricingPage /></PageTransition>} />
         <Route path="/about"         element={<PageTransition><AboutPage /></PageTransition>} />
         <Route path="/features/:slug" element={<PageTransition><FunctionPage /></PageTransition>} />

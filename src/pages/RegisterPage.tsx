@@ -38,7 +38,7 @@ export default function RegisterPage() {
       setForm(prev => ({ ...prev, [key]: e.target.value }))
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault()
     setError('')
 
@@ -82,7 +82,13 @@ export default function RegisterPage() {
         return
       }
 
-      navigate('/login')
+      localStorage.setItem('user', JSON.stringify({
+        firstName: form.firstName,
+        lastName:  form.lastName,
+        email:     form.email,
+      }))
+
+      navigate('/onboarding')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
     } finally {
