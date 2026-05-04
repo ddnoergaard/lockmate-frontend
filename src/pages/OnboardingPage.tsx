@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { IconBuildingSkyscraper, IconLink, IconUser } from '@tabler/icons-react'
 import styles from './OnboardingPage.module.css'
+import { API_BASE } from '../config'
 
 const options = [
   {
@@ -24,13 +26,52 @@ const options = [
   },
 ]
 
+function getStoredUser() {
+  try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
+}
+
 export default function OnboardingPage() {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState('')
 
-  function handleSelect(id: string) {
-    if (id === 'organisation') navigate('/onboarding/organisation')
-    if (id === 'invite')       navigate('/onboarding/invite')
-    if (id === 'personal')     navigate('/app/dashboard')
+  async function handleSelect(id: string) {
+    if (id === 'organisation') { navigate('/onboarding/organisation'); return }
+    if (id === 'invite')       { navigate('/onboarding/invite');       return }
+
+    // Personal — fire API call directly
+    setError('')
+    setLoading(true)
+    try {
+      const user  = getStoredUser()
+      const token = localStorage.getItem('token') ?? ''
+      const res   = await fetch(`${API_BASE}/api/organisation/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          organisationName: user.firstName || 'Personlig',
+          email:            user.email     || null,
+          cvr:              null,
+          phone:            null,
+          isPersonal:       true,
+        }),
+      })
+
+      if (!res.ok) {
+        const text = await res.text()
+        setError(text || `Fejl ${res.status}. Prøv igen.`)
+        return
+      }
+
+      navigate('/app/dashboard')
+    } catch {
+      setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

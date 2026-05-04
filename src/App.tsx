@@ -5,6 +5,7 @@ import AuthPage from './pages/AuthPage'
 import RegisterPage from './pages/RegisterPage'
 import OnboardingPage from './pages/OnboardingPage'
 import CreateOrganisationPage from './pages/CreateOrganisationPage'
+import InviteCodePage from './pages/InviteCodePage'
 import PricingPage from './pages/PricingPage'
 import AboutPage from './pages/AboutPage'
 import FunctionPage from './pages/functions/FunctionPage'
@@ -27,6 +28,7 @@ function App() {
         <Route path="/register"   element={<PageTransition><RegisterPage /></PageTransition>} />
         <Route path="/onboarding" element={<PageTransition><OnboardingPage /></PageTransition>} />
         <Route path="/onboarding/organisation" element={<PageTransition><CreateOrganisationPage /></PageTransition>} />
+        <Route path="/onboarding/invite"       element={<PageTransition><InviteCodePage /></PageTransition>} />
         <Route path="/pricing"  element={<PageTransition><PricingPage /></PageTransition>} />
         <Route path="/about"         element={<PageTransition><AboutPage /></PageTransition>} />
         <Route path="/features/:slug" element={<PageTransition><FunctionPage /></PageTransition>} />

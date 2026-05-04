@@ -6,6 +6,7 @@ import {
   IconUser, IconPhone, IconArrowNarrowRight, IconArrowNarrowLeft,
 } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
+import { API_BASE } from '../config'
 import styles from './RegisterPage.module.css'
 
 const months = [
@@ -63,7 +64,7 @@ export default function RegisterPage() {
 
     setLoading(true)
     try {
-      const res = await fetch('https://localhost:7014/api/user/register', {
+      const res = await fetch(`${API_BASE}/api/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -82,6 +83,8 @@ export default function RegisterPage() {
         return
       }
 
+      const { token } = await res.json()
+      localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify({
         firstName: form.firstName,
         lastName:  form.lastName,

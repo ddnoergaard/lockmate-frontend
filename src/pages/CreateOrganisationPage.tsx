@@ -5,6 +5,7 @@ import {
   IconBuildingSkyscraper, IconId, IconMail, IconPhone, IconArrowNarrowRight,
 } from '@tabler/icons-react'
 import styles from './CreateOrganisationPage.module.css'
+import { API_BASE } from '../config'
 
 function getStoredUser() {
   try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
@@ -38,15 +39,20 @@ export default function CreateOrganisationPage() {
 
     setLoading(true)
     try {
-      const userEmail = user.email || ''
-      const res = await fetch(`https://localhost:7014/api/organisation/create?userEmail=${encodeURIComponent(userEmail)}`, {
+      const token = localStorage.getItem('token') ?? ''
+      const res = await fetch(`${API_BASE}/api/organisation/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({
           organisationName: form.name,
           cvr:              form.vatNumber || null,
           email:            form.email    || user.email || null,
           phone:            form.phone    || null,
+          userEmail:        user.email,
+          isPersonal:       false
         }),
       })
 
