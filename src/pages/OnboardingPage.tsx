@@ -85,7 +85,7 @@ export default function OnboardingPage() {
 
         <div className={styles.cards}>
           {options.map(({ id, icon: Icon, title, desc }) => (
-            <button key={id} className={styles.card} onClick={() => handleSelect(id)}>
+            <button key={id} className={styles.card} onClick={() => handleSelect(id)} disabled={loading}>
               <div className={styles.iconWrap}>
                 <Icon size={22} strokeWidth={1.5} />
               </div>
