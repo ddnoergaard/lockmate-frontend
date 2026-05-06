@@ -9,11 +9,7 @@
   padding: 16px 24px 0;
 }
 
-.header {
-  position: sticky;
-  top: 16px;
-  z-index: 100;
-}
+.header {}
 
 /* ── Inner width — matches all other sections ── */
 .inner {

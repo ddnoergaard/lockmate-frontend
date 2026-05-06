@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   IconLayoutDashboard,
   IconKey,
@@ -88,8 +88,25 @@ function OrgSelector() {
 }
 
 export default function AppLayout() {
+  const navigate = useNavigate()
+  const [loggingOut, setLoggingOut] = useState(false)
+
+  function logout() {
+    setLoggingOut(true)
+    setTimeout(() => {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      navigate('/')
+    }, 750)
+  }
+
   return (
     <div className={styles.layout}>
+      {loggingOut && (
+        <div className={styles.logoutOverlay}>
+          <p className={styles.logoutText}>Logger ud...</p>
+        </div>
+      )}
       <aside className={styles.sidebar}>
 
         {/* Org selector */}
@@ -136,7 +153,7 @@ export default function AppLayout() {
             <span>Indstillinger</span>
           </NavLink>
 
-          <button className={styles.navItem}>
+          <button className={styles.navItem} onClick={logout}>
             <IconLogout size={16} strokeWidth={1.75} />
             <span>Log ud</span>
           </button>

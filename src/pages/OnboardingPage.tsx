@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { IconBuildingSkyscraper, IconLink, IconUser } from '@tabler/icons-react'
 import styles from './OnboardingPage.module.css'
 import { API_BASE } from '../config'
@@ -97,6 +97,15 @@ export default function OnboardingPage() {
             </button>
           ))}
         </div>
+
+        {error && <p className={styles.errorMsg}>{error}</p>}
+
+        <p className={styles.skip}>
+          Vil du udforske først?{' '}
+          <Link to="/app/dashboard" className={styles.skipLink}>
+            Spring opsætning over
+          </Link>
+        </p>
       </div>
     </div>
   )

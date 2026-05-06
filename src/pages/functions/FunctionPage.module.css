@@ -3,15 +3,7 @@
   background: var(--bg);
 }
 
-/* ── Navbar ── */
-.navWrap {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 16px 24px 0;
-  position: sticky;
-  top: 16px;
-  z-index: 100;
-}
+.navWrap {}
 
 /* ── Hero ── */
 .heroWrap {

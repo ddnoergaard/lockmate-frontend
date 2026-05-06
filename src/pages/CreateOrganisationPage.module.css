@@ -21,6 +21,19 @@
   gap: 8px;
 }
 
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 4px;
+  width: fit-content;
+}
+
+.backLink:hover { color: var(--text-sub); }
+
 .title {
   font-size: 26px;
   font-weight: 500;

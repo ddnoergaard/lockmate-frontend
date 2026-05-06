@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import {
-  IconBuildingSkyscraper, IconId, IconMail, IconPhone, IconArrowNarrowRight,
+  IconBuildingSkyscraper, IconId, IconMail, IconPhone, IconArrowNarrowRight, IconArrowNarrowLeft,
 } from '@tabler/icons-react'
 import styles from './CreateOrganisationPage.module.css'
 import { API_BASE } from '../config'
@@ -78,6 +78,10 @@ export default function CreateOrganisationPage() {
 
       <div className={styles.inner}>
         <div className={styles.head}>
+          <Link to="/onboarding" className={styles.backLink}>
+            <IconArrowNarrowLeft size={14} strokeWidth={2} />
+            Tilbage til valgmuligheder
+          </Link>
           <h1 className={styles.title}>Opret din organisation</h1>
           <p className={styles.subtitle}>Du kan tilpasse alle detaljer senere fra organisationsindstillingerne.</p>
         </div>
