@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { IconBuildingSkyscraper, IconLink, IconUser } from '@tabler/icons-react'
 import styles from './OnboardingPage.module.css'
 import { API_BASE } from '../config'
+import { fetchAndStoreOrgId } from '../utils/fetchOrgId'
 
 const options = [
   {
@@ -66,6 +67,7 @@ export default function OnboardingPage() {
         return
       }
 
+      await fetchAndStoreOrgId()
       navigate('/app/dashboard')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')

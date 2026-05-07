@@ -6,6 +6,7 @@ import {
 } from '@tabler/icons-react'
 import styles from './CreateOrganisationPage.module.css'
 import { API_BASE } from '../config'
+import { fetchAndStoreOrgId } from '../utils/fetchOrgId'
 
 function getStoredUser() {
   try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
@@ -62,6 +63,7 @@ export default function CreateOrganisationPage() {
         return
       }
 
+      await fetchAndStoreOrgId()
       navigate('/app/dashboard')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')

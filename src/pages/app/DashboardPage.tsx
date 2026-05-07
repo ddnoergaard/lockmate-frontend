@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
   IconKey,
   IconShieldLock,
@@ -7,17 +8,11 @@ import {
   IconArrowUp,
   IconArrowDown,
   IconMinus,
+  IconInfoCircle,
 } from '@tabler/icons-react'
+import { Link } from 'react-router-dom'
 import styles from './DashboardPage.module.css'
-
-/* ── Placeholder data ── */
-
-const stats = [
-  { label: 'Loginoplysninger i alt', value: '24', icon: IconKey,           },
-  { label: 'Aktive vaults',          value: '6',  icon: IconShieldLock,    },
-  { label: 'Teammedlemmer',          value: '8',  icon: IconUsers,         },
-  { label: 'Svage adgangskoder',     value: '3',  icon: IconAlertTriangle, warn: true },
-]
+import { API_BASE } from '../../config'
 
 const vaultDistribution = [
   { name: 'Engineering', value: 9,  color: '#8BBF75' },
@@ -50,6 +45,41 @@ const TrendIcon = ({ trend }: { trend: string }) => {
 }
 
 export default function DashboardPage() {
+  const [credentialCount, setCredentialCount] = useState<number | null>(null)
+  const [vaultCount,      setVaultCount]      = useState<number | null>(null)
+  const [memberCount,     setMemberCount]     = useState<number | null>(null)
+  const hasOrg = !!localStorage.getItem('orgId')
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') ?? ''
+    const orgId = localStorage.getItem('orgId')
+    if (!orgId) return
+
+    const headers = { 'Authorization': `Bearer ${token}` }
+
+    fetch(`${API_BASE}/api/Credential/get-credential-count?orgId=${orgId}`, { headers })
+      .then(res => res.ok ? res.json() : null)
+      .then(count => { if (count !== null) setCredentialCount(count) })
+      .catch(() => {})
+
+    fetch(`${API_BASE}/api/vault/get-count?orgId=${orgId}`, { headers })
+      .then(res => res.ok ? res.json() : null)
+      .then(count => { if (count !== null) setVaultCount(count) })
+      .catch(() => {})
+
+    fetch(`${API_BASE}/api/organisation/get-member-count?orgId=${orgId}`, { headers })
+      .then(res => res.ok ? res.json() : null)
+      .then(count => { if (count !== null) setMemberCount(count) })
+      .catch(() => {})
+  }, [])
+
+  const stats = [
+    { label: 'Loginoplysninger i alt', value: credentialCount !== null ? String(credentialCount) : '—', icon: IconKey           },
+    { label: 'Aktive vaults',          value: vaultCount !== null ? String(vaultCount) : '—',            icon: IconShieldLock    },
+    { label: 'Teammedlemmer',          value: memberCount !== null ? String(memberCount) : '—',          icon: IconUsers         },
+    { label: 'Svage adgangskoder',     value: 'todo',                                                       icon: IconAlertTriangle, warn: true },
+  ]
+
   return (
     <div className={styles.page}>
 
@@ -64,6 +94,17 @@ export default function DashboardPage() {
           Tilføj loginoplysning
         </button>
       </div>
+
+      {/* ── No-org banner ── */}
+      {!hasOrg && (
+        <div className={styles.noOrgBanner}>
+          <IconInfoCircle size={16} strokeWidth={1.75} className={styles.noOrgIcon} />
+          <span className={styles.noOrgText}>
+            Du er ikke en del af nogen organisation endnu.{' '}
+            <Link to="/onboarding" className={styles.noOrgLink}>Opret eller tilslut dig en for at komme i gang.</Link>
+          </span>
+        </div>
+      )}
 
       {/* ── Stats ── */}
       <div className={styles.statsRow}>

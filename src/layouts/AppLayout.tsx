@@ -96,6 +96,7 @@ export default function AppLayout() {
     setTimeout(() => {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      localStorage.removeItem('orgId')
       navigate('/')
     }, 750)
   }

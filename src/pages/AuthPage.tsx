@@ -8,6 +8,7 @@ import {
 import logoSrc from '../assets/logo.svg'
 import styles from './AuthPage.module.css'
 import { API_BASE } from '../config'
+import { fetchAndStoreOrgId } from '../utils/fetchOrgId'
 
 export default function AuthPage() {
   const navigate = useNavigate()
@@ -42,6 +43,7 @@ export default function AuthPage() {
 
       const { token } = await res.json()
       localStorage.setItem('token', token)
+      await fetchAndStoreOrgId()
       navigate('/app/dashboard')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
