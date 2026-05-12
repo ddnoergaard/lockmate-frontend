@@ -44,7 +44,17 @@
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: background 0.3s;
+  /* slow out — lets the glow linger so users can "draw" across the grid */
+  transition: background 1.4s ease, border-color 1.4s ease, box-shadow 1.4s ease;
+  cursor: default;
+}
+
+.cell:hover {
+  background: rgba(74, 222, 128, 0.14);
+  border-color: rgba(74, 222, 128, 0.35);
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.14);
+  /* fast in — snappy response to the cursor */
+  transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
 }
 
 .cell:nth-child(3),

@@ -9,67 +9,169 @@ import styles from './PricingPage.module.css'
 /* ── Plans ── */
 const plans = [
   {
-    name: 'Gratis',
-    monthlyPrice: '0 kr',
-    annualPrice: '0 kr',
-    desc: 'Alt du skal bruge for at komme i gang.',
-    cta: 'Kom gratis i gang',
+    name: 'Starter',
+    monthlyPrice: '149',
+    annualPrice: '119',
+    desc: 'Til små teams der vil i gang hurtigt og sikkert.',
+    cta: 'Start gratis prøveperiode',
     ctaLink: '/register',
     highlight: false,
     features: [
-      '25 loginoplysninger',
-      '1 bruger',
-      '2 enheder',
+      'Op til 5 brugere',
+      'Ubegrænsede loginoplysninger',
+      'Ubegrænsede enheder',
       'AES-256 kryptering',
       'Adgangskodegenerator',
+      'Sikker deling',
       'Browserudvidelse',
     ],
   },
   {
-    name: 'Starter',
-    monthlyPrice: '69 kr',
-    annualPrice: '55 kr',
-    desc: 'Til små teams der har brug for plads til vækst.',
-    cta: 'Start gratis prøveperiode',
-    ctaLink: '/register',
-    highlight: false,
-    features: [
-      '200 loginoplysninger',
-      'Op til 3 brugere',
-      'Ubegrænsede enheder',
-      'Alt i Gratis',
-      'Sikker deling',
-      'Brud-overvågning',
-    ],
-  },
-  {
-    name: 'Vækst',
-    monthlyPrice: '129 kr',
-    annualPrice: '99 kr',
-    desc: 'Til teams der har brug for fuld kontrol.',
+    name: 'Growth',
+    monthlyPrice: '249',
+    annualPrice: '199',
+    desc: 'Til voksende teams med overvågning og prioriteret support.',
     cta: 'Start gratis prøveperiode',
     ctaLink: '/register',
     highlight: true,
     features: [
-      '1.000 loginoplysninger',
-      'Op til 10 brugere',
-      'Ubegrænsede enheder',
+      'Op til 15 brugere',
+      'Ubegrænsede loginoplysninger',
       'Alt i Starter',
+      'Brud-overvågning',
       'Prioriteret support',
+    ],
+  },
+  {
+    name: 'Scale',
+    monthlyPrice: '449',
+    annualPrice: '359',
+    desc: 'Til teams der skal skalere. Op til 50 brugere, fuld kontrol.',
+    cta: 'Start gratis prøveperiode',
+    ctaLink: '/register',
+    highlight: false,
+    features: [
+      'Op til 50 brugere',
+      'Ubegrænsede loginoplysninger',
+      'Alt i Growth',
       'Revisionslogge',
+      'Dedikeret support',
     ],
   },
 ]
+
+/* ── Comparison teaser ── */
+const competitors = [
+  { name: 'Bitwarden Teams',    pricePerUser: 28 },
+  { name: '1Password Business', pricePerUser: 56 },
+  { name: 'Dashlane',           pricePerUser: 56 },
+]
+
+function getLockmateTier(users: number) {
+  if (users <= 5)  return { name: 'Starter',  price: 149 }
+  if (users <= 15) return { name: 'Growth',   price: 249 }
+  return                  { name: 'Scale', price: 449 }
+}
+
+function ComparisonTeaser() {
+  const [users, setUsers] = useState(20)
+  const lockmate   = getLockmateTier(users)
+  const compPrices = competitors.map(c => ({ ...c, total: c.pricePerUser * users }))
+  const maxCost    = Math.max(lockmate.price, ...compPrices.map(c => c.total))
+
+  return (
+    <div className={styles.compareWrap}>
+      <div className={styles.compareInner}>
+        <div className={styles.compareHead}>
+          <span className={styles.eyebrow}>Prissammenligning</span>
+          <h2 className={styles.compareTitle}>Flat takst. Ingen ubehagelige overraskelser.</h2>
+          <p className={styles.compareSubtitle}>
+            Konkurrenterne fakturerer pr. bruger. Vi gør ikke. Træk slideren og se forskellen.
+          </p>
+        </div>
+
+        <div className={styles.sliderBlock}>
+          <div className={styles.sliderLabelRow}>
+            <span className={styles.sliderLabel}>Antal brugere</span>
+            <span className={styles.sliderValue}>{users}</span>
+          </div>
+          <input
+            type="range" min={1} max={50} value={users}
+            onChange={e => setUsers(Number(e.target.value))}
+            className={styles.slider}
+          />
+          <div className={styles.sliderTicks}>
+            {([
+              { v: 1,  label: 'Starter'  },
+              { v: 6,  label: 'Growth'   },
+              { v: 16, label: 'Scale' },
+            ] as const).map(({ v, label }) => (
+              <div
+                key={v}
+                className={styles.tick}
+                style={{ left: `calc(${(v - 1) / 49} * (100% - 20px) + 10px)` }}
+              >
+                <div className={styles.tickMark} />
+                <span className={styles.tickLabel}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.compareRows}>
+          <div className={`${styles.compareRow} ${styles.compareRowLock}`}>
+            <div className={styles.rowLeft}>
+              <span className={styles.rowName}>Lockmate {lockmate.name}</span>
+              <span className={styles.rowTag}>Vores pris</span>
+            </div>
+            <div className={styles.rowBarWrap}>
+              <div
+                className={`${styles.barFill} ${styles.barGreen}`}
+                style={{ width: `${Math.max(4, (lockmate.price / maxCost) * 100)}%` }}
+              />
+            </div>
+            <span className={styles.rowPrice}>{lockmate.price} kr/md.</span>
+          </div>
+
+          {compPrices.map(c => (
+            <div key={c.name} className={styles.compareRow}>
+              <div className={styles.rowLeft}>
+                <span className={styles.rowName}>{c.name}</span>
+                <span className={styles.rowNote}>{c.pricePerUser} kr/bruger/md.</span>
+              </div>
+              <div className={styles.rowBarWrap}>
+                <div
+                  className={styles.barFill}
+                  style={{ width: `${Math.max(4, (c.total / maxCost) * 100)}%` }}
+                />
+              </div>
+              <span className={styles.rowPrice}>{c.total} kr/md.</span>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.compareFooter}>
+          <p className={styles.compareNote}>
+            * Konkurrentpriser omregnet fra USD til DKK (ca. 1 USD = 7 DKK). Vejledende priser.
+          </p>
+          <Link to="/pricing/comparison" className={styles.compareLink}>
+            Se fuld sammenligning <IconArrowNarrowRight size={14} strokeWidth={2} />
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /* ── FAQ ── */
 const faqs = [
   {
     q: 'Er der en gratis prøveperiode?',
-    a: 'Ja. Starter- og Vækst-planer kommer med en 14-dages gratis prøveperiode. Intet kreditkort kræves for at starte.',
+    a: 'Ja. Starter-planen kommer med 30 dages gratis prøveperiode – intet kreditkort kræves for at starte.',
   },
   {
     q: 'Hvordan fungerer zero-knowledge kryptering?',
-    a: 'Din masterkodeord forlader aldrig din enhed. Alt krypteres lokalt med AES-256 inden det rammer vores servere. Vi kan bogstaveligt talt ikke læse dine data. Selv hvis vi ville.',
+    a: 'Din masterkodeord forlader aldrig din enhed. Alt krypteres lokalt med AES-256 inden det rammer vores servere. Vi kan bogstaveligt talt ikke læse dine data.',
   },
   {
     q: 'Kan jeg importere fra en anden adgangskodemanager?',
@@ -80,8 +182,8 @@ const faqs = [
     a: 'Du har 30 dage til at eksportere alt efter opsigelse. Efter dette vindue slettes alle data permanent fra vores servere.',
   },
   {
-    q: 'Kan jeg tilføje flere teammedlemmer senere?',
-    a: 'Absolut. Du kan opgradere din plan eller købe ekstra pladser når som helst fra dine organisationsindstillinger.',
+    q: 'Kan jeg tilføje flere teammedlemmer later?',
+    a: 'Absolut. Du kan opgradere din plan når som helst fra dine organisationsindstillinger. Ingen IT-sag krævet.',
   },
   {
     q: 'Er min masterkodeord gemt nogen steder?',
@@ -97,7 +199,9 @@ function FAQItem({ q, a }: { q: string; a: string }) {
         <span>{q}</span>
         <IconChevronDown size={16} strokeWidth={1.75} className={styles.faqChevron} />
       </button>
-      {open && <p className={styles.faqAnswer}>{a}</p>}
+      <div className={`${styles.faqAnswerWrap} ${open ? styles.faqAnswerOpen : ''}`}>
+        <p className={styles.faqAnswer}>{a}</p>
+      </div>
     </div>
   )
 }
@@ -109,38 +213,36 @@ export default function PricingPage() {
     <div className={styles.page}>
       <Helmet>
         <title>Priser – Lockmate</title>
-        <meta name="description" content="Se Lockmates prisplaner. Start gratis, eller vælg en plan der passer til dit team. Ingen skjulte gebyrer – betal kun for det du bruger." />
+        <meta name="description" content="Se Lockmates prisplaner. Start med 30 dage gratis. Flat månedlig takst – ingen skjulte gebyrer, uanset hvor mange I er." />
       </Helmet>
       <div className={styles.container}>
         <header className={styles.header}>
           <Navbar />
         </header>
 
-        {/* ── Page header ── */}
         <div className={styles.pageHead}>
-        <span className={styles.eyebrow}>Priser</span>
-        <h1 className={styles.title}>Enkle, gennemsigtige priser</h1>
-        <p className={styles.subtitle}>
-          Start gratis. Opgrader når dit team har brug for mere.
-          <br />Ingen skjulte gebyrer, ingen overraskelser.
-        </p>
+          <span className={styles.eyebrow}>Priser</span>
+          <h1 className={styles.title}>Enkle, gennemsigtige priser</h1>
+          <p className={styles.subtitle}>
+            Flat månedlig takst. Ingen overraskelser, uanset hvor mange I er.
+            <br />Start med 30 dage gratis – intet kreditkort kræves.
+          </p>
 
-        {/* Billing toggle */}
-        <div className={styles.toggle}>
-          <button
-            className={`${styles.toggleBtn} ${!annual ? styles.toggleActive : ''}`}
-            onClick={() => setAnnual(false)}
-          >
-            Månedlig
-          </button>
-          <button
-            className={`${styles.toggleBtn} ${annual ? styles.toggleActive : ''}`}
-            onClick={() => setAnnual(true)}
-          >
-            Årlig
-            <span className={styles.saveBadge}>Spar 20%</span>
-          </button>
-        </div>
+          <div className={styles.toggle}>
+            <button
+              className={`${styles.toggleBtn} ${!annual ? styles.toggleActive : ''}`}
+              onClick={() => setAnnual(false)}
+            >
+              Månedlig
+            </button>
+            <button
+              className={`${styles.toggleBtn} ${annual ? styles.toggleActive : ''}`}
+              onClick={() => setAnnual(true)}
+            >
+              Årlig
+              <span className={styles.saveBadge}>Spar 20%</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -157,19 +259,22 @@ export default function PricingPage() {
                   <span className={styles.price}>
                     {annual ? plan.annualPrice : plan.monthlyPrice}
                   </span>
-                  <span className={styles.priceSuffix}> / md.</span>
+                  <span className={styles.priceSuffix}> kr / md.</span>
                 </div>
-                {annual && plan.monthlyPrice !== '0 kr' && (
+                {annual && (
                   <span className={styles.billedNote}>Faktureres årligt</span>
                 )}
                 <p className={styles.planDesc}>{plan.desc}</p>
               </div>
 
               <div className={styles.cardCtas}>
-                <Link to={plan.ctaLink} className={`${styles.primaryCta} ${plan.highlight ? styles.primaryCtaGreen : ''}`}>
+                <Link
+                  to={plan.ctaLink}
+                  className={`${styles.primaryCta} ${plan.highlight ? styles.primaryCtaGreen : ''}`}
+                >
                   {plan.cta}
                 </Link>
-                <a href="#" className={styles.secondaryCta}>Kontakt salg</a>
+                <span className={styles.trialNote}>30 dage gratis · Intet kreditkort kræves</span>
               </div>
 
               <div className={styles.divider} />
@@ -194,35 +299,35 @@ export default function PricingPage() {
           <div>
             <p className={styles.enterpriseName}>Enterprise</p>
             <p className={styles.enterpriseDesc}>
-              Ubegrænsede loginoplysninger, ubegrænsede brugere. SSO, dedikeret support, tilpasset onboarding og revisionslogge inkluderet.
+              Over 50 brugere? Kontakt os for en skræddersyet løsning med SSO, dedikeret support og tilpasset onboarding.
             </p>
           </div>
           <div className={styles.enterpriseRight}>
-            <span className={styles.enterprisePrice}>Fra 349 kr / md.</span>
-            <Link to="/register" className={styles.enterpriseBtn}>
-              Kom i gang <IconArrowNarrowRight size={15} strokeWidth={2} />
-            </Link>
+            <span className={styles.enterprisePrice}>Tilpasset pris</span>
+            <a href="mailto:contact@lockmate.dk" className={styles.enterpriseBtn}>
+              Kontakt os <IconArrowNarrowRight size={15} strokeWidth={2} />
+            </a>
           </div>
         </div>
       </div>
 
+      {/* ── Comparison teaser ── */}
+      <ComparisonTeaser />
+
       {/* ── FAQ ── */}
       <div className={styles.faqWrap}>
         <div className={styles.faqInner}>
-          {/* Left */}
           <div className={styles.faqLeft}>
             <span className={styles.faqEyebrow}>Support</span>
             <h2 className={styles.faqTitle}>FAQ</h2>
             <p className={styles.faqSubtitle}>
               Alt du skal vide om produktet og fakturering.
               Kan du ikke finde svaret?{' '}
-              <a href="mailto:contact@lockhub.com" className={styles.faqContact}>
+              <a href="mailto:contact@lockmate.dk" className={styles.faqContact}>
                 Skriv til os.
               </a>
             </p>
           </div>
-
-          {/* Right */}
           <div className={styles.faqList}>
             {faqs.map((f) => <FAQItem key={f.q} {...f} />)}
           </div>
@@ -232,27 +337,27 @@ export default function PricingPage() {
       {/* ── No contracts section ── */}
       <div className={styles.contractsWrap}>
         <div className={styles.contractsInner}>
-          {/* Left — copy */}
           <div className={styles.contractsLeft}>
             <h2 className={styles.contractsHeading}>
               Så nemt som 1, 2, 3..<br />Ingen faldgruber.
             </h2>
             <p className={styles.contractsBody}>
-              Kørende på under 5 minutter. Opret din organisation, lav en vault, gem dine loginoplysninger og få hele teamet med. Alt inden dit næste møde. <br /><br /> Priser der skalerer med <strong>dig</strong>, ikke imod <strong>dig</strong>.
+              Kørende på under 5 minutter. Opret din organisation, lav en vault, gem dine loginoplysninger og få hele teamet med. Alt inden dit næste møde.
+              <br /><br />
+              Priser der skalerer med <strong>dig</strong>, ikke imod <strong>dig</strong>.
             </p>
             <div className={styles.contractsCtas}>
               <Link to="/register" className={styles.contractsPrimary}>Kom gratis i gang</Link>
-              <Link to="/pricing" className={styles.contractsSecondary}>Se priser</Link>
+              <Link to="/pricing/comparison" className={styles.contractsSecondary}>Se prissammenligning</Link>
             </div>
           </div>
 
-          {/* Right — setup steps */}
           <div className={styles.contractsRight}>
             {[
-              { step: '01', title: 'Opret din organisation',          desc: 'Opret din konto og konfigurer din organisation på under et minut.' },
-              { step: '02', title: 'Lav en vault',                     desc: 'Vaults holder loginoplysninger organiseret efter projekt, team eller adgangsniveau.' },
-              { step: '03', title: 'Begynd at gemme loginoplysninger', desc: 'Tilføj manuelt eller importér fra 1Password, LastPass, Bitwarden eller CSV.' },
-              { step: '04', title: 'Invitér dit team',                  desc: 'Del vaults og tildel roller. Ingen IT-sag krævet.' },
+              { step: '01', title: 'Opret din organisation',           desc: 'Opret din konto og konfigurer din organisation på under et minut.' },
+              { step: '02', title: 'Lav en vault',                      desc: 'Vaults holder loginoplysninger organiseret efter projekt, team eller adgangsniveau.' },
+              { step: '03', title: 'Begynd at gemme loginoplysninger',  desc: 'Tilføj manuelt eller importér fra 1Password, LastPass, Bitwarden eller CSV.' },
+              { step: '04', title: 'Invitér dit team',                   desc: 'Del vaults og tildel roller. Ingen IT-sag krævet.' },
             ].map((s) => (
               <div key={s.step} className={styles.stepCard}>
                 <div className={styles.stepMeta}>

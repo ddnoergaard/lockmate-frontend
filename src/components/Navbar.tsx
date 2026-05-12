@@ -5,6 +5,11 @@ import { IconChevronDown, IconMenu2, IconX } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
 import styles from './Navbar.module.css'
 
+const pricingLinks = [
+  { to: '/pricing',            name: 'Priser',            desc: 'Se vores flade månedlige takster'                },
+  { to: '/pricing/comparison', name: 'Prissammenligning', desc: 'Sammenlign os med Bitwarden, 1Password og flere' },
+]
+
 const functions = [
   { slug: 'encryption',         name: 'Kryptering',               desc: 'Militærkvalitets AES-256 og zero-knowledge'     },
   { slug: 'cross-platform',     name: 'Tværplatform',              desc: 'Synkronisér på tværs af enheder øjeblikkeligt'  },
@@ -12,6 +17,52 @@ const functions = [
   { slug: 'password-generator', name: 'Adgangskodegenerator',      desc: 'Ubrydelige adgangskoder på bestilling'          },
   { slug: 'breach-monitoring',  name: 'Brud-overvågning',          desc: 'Advarsler når dine oplysninger er lækket'       },
 ]
+
+function PricingDropdown() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLLIElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function handle(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [open])
+
+  return (
+    <li ref={ref} className={styles.dropdownWrap}>
+      <button
+        className={`${styles.link} ${open ? styles.linkActive : ''}`}
+        onClick={() => setOpen(v => !v)}
+      >
+        Priser
+        <IconChevronDown
+          size={13}
+          strokeWidth={2}
+          className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
+        />
+      </button>
+
+      {open && (
+        <div className={styles.dropdown}>
+          {pricingLinks.map(({ to, name, desc }) => (
+            <Link
+              key={to}
+              to={to}
+              className={styles.dropdownItem}
+              onClick={() => setOpen(false)}
+            >
+              <span className={styles.dropdownName}>{name}</span>
+              <span className={styles.dropdownDesc}>{desc}</span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </li>
+  )
+}
 
 function FeaturesDropdown() {
   const [open, setOpen] = useState(false)
@@ -80,7 +131,7 @@ export default function Navbar() {
           <ul className={styles.navLinks}>
             <li><Link to="/" className={styles.link}>Hjem</Link></li>
             <FeaturesDropdown />
-            <li><Link to="/pricing" className={styles.link}>Priser</Link></li>
+            <PricingDropdown />
             <li><Link to="/about" className={styles.link}>Om os</Link></li>
             <li><Link to="/contact" className={styles.link}>Kontakt</Link></li>
           </ul>
@@ -116,7 +167,20 @@ export default function Navbar() {
                     </Link>
                   ))}
                 </li>
-                <li><Link to="/pricing" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Priser</Link></li>
+                <li>
+                  <p className={styles.mobileSectionLabel}>Priser</p>
+                  {pricingLinks.map(({ to, name }) => (
+                    <Link
+                      key={to}
+                      to={to}
+                      className={styles.mobileLink}
+                      style={{ paddingLeft: 20 }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {name}
+                    </Link>
+                  ))}
+                </li>
                 <li><Link to="/about" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Om os</Link></li>
                 <li><Link to="/contact" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Kontakt</Link></li>
               </ul>

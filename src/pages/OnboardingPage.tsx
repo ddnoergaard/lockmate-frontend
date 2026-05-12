@@ -1,10 +1,7 @@
-import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, Link } from 'react-router-dom'
-import { IconBuildingSkyscraper, IconLink, IconUser } from '@tabler/icons-react'
+import { IconBuildingSkyscraper, IconLink } from '@tabler/icons-react'
 import styles from './OnboardingPage.module.css'
-import { API_BASE } from '../config'
-import { fetchAndStoreOrgId } from '../utils/fetchOrgId'
 
 const options = [
   {
@@ -19,61 +16,14 @@ const options = [
     title: 'Brug invitationslink',
     desc:  'Bliv en del af en eksisterende organisation med et invitationslink fra din administrator.',
   },
-  {
-    id:    'personal',
-    icon:  IconUser,
-    title: 'Personlig vault',
-    desc:  'Brug Lockmate til dig selv. Gem og autofyld dine egne loginoplysninger sikkert.',
-  },
 ]
-
-function getStoredUser() {
-  try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
-}
 
 export default function OnboardingPage() {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState('')
 
-  async function handleSelect(id: string) {
+  function handleSelect(id: string) {
     if (id === 'organisation') { navigate('/onboarding/organisation'); return }
     if (id === 'invite')       { navigate('/onboarding/invite');       return }
-
-    // Personal — fire API call directly
-    setError('')
-    setLoading(true)
-    try {
-      const user  = getStoredUser()
-      const token = localStorage.getItem('token') ?? ''
-      const res   = await fetch(`${API_BASE}/api/organisation/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          organisationName: user.firstName || 'Personlig',
-          email:            user.email     || null,
-          cvr:              null,
-          phone:            null,
-          isPersonal:       true,
-        }),
-      })
-
-      if (!res.ok) {
-        const text = await res.text()
-        setError(text || `Fejl ${res.status}. Prøv igen.`)
-        return
-      }
-
-      await fetchAndStoreOrgId()
-      navigate('/app/dashboard')
-    } catch {
-      setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
-    } finally {
-      setLoading(false)
-    }
   }
 
   return (
@@ -83,11 +33,11 @@ export default function OnboardingPage() {
       </Helmet>
 
       <div className={styles.inner}>
-        <h1 className={styles.title}>Hvordan vil du bruge Lockmate?</h1>
+        <h1 className={styles.title}>Opret en organisation eller tilslut dig</h1>
 
         <div className={styles.cards}>
           {options.map(({ id, icon: Icon, title, desc }) => (
-            <button key={id} className={styles.card} onClick={() => handleSelect(id)} disabled={loading}>
+            <button key={id} className={styles.card} onClick={() => handleSelect(id)}>
               <div className={styles.iconWrap}>
                 <Icon size={22} strokeWidth={1.5} />
               </div>
@@ -99,8 +49,6 @@ export default function OnboardingPage() {
             </button>
           ))}
         </div>
-
-        {error && <p className={styles.errorMsg}>{error}</p>}
 
         <p className={styles.skip}>
           Vil du udforske først?{' '}
