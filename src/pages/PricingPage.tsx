@@ -130,7 +130,7 @@ function ComparisonTeaser() {
                 style={{ width: `${Math.max(4, (lockmate.price / maxCost) * 100)}%` }}
               />
             </div>
-            <span className={styles.rowPrice}>{lockmate.price} kr/md. <span className={styles.rowVat}>eks. moms</span></span>
+            <span className={styles.rowPrice}>{lockmate.price} kr/md.</span>
           </div>
 
           {compPrices.map(c => (
@@ -152,7 +152,7 @@ function ComparisonTeaser() {
 
         <div className={styles.compareFooter}>
           <p className={styles.compareNote}>
-            * Konkurrentpriser omregnet fra USD til DKK (ca. 1 USD = 7 DKK). Vejledende priser.
+            * Konkurrentpriser omregnet fra USD til DKK (ca. 1 USD = 7 DKK). Vejledende priser. Alle priser er eks. moms.
           </p>
           <Link to="/pricing/comparison" className={styles.compareLink}>
             Se fuld sammenligning <IconArrowNarrowRight size={14} strokeWidth={2} />

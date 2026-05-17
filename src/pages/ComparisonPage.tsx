@@ -127,7 +127,7 @@ export default function ComparisonPage() {
             <div className={styles.savingsCallout}>
               <div className={styles.savingsLeft}>
                 <span className={styles.savingsLabel}>Du sparer op til</span>
-                <span className={styles.savingsAmount}>{maxSaving} kr/md. <span className={styles.savingsVat}>eks. moms</span></span>
+                <span className={styles.savingsAmount}>{maxSaving} kr/md.</span>
               </div>
               <p className={styles.savingsNote}>
                 sammenlignet med det dyreste alternativ ved {users} {users === 1 ? 'bruger' : 'brugere'}
@@ -147,7 +147,7 @@ export default function ComparisonPage() {
                   style={{ width: `${Math.max(4, (lockmate.price / maxCost) * 100)}%` }}
                 />
               </div>
-              <span className={styles.rowPrice}>{lockmate.price} kr/md. <span className={styles.rowVat}>eks. moms</span></span>
+              <span className={styles.rowPrice}>{lockmate.price} kr/md.</span>
             </div>
 
             {compPrices.map(c => (
@@ -171,7 +171,7 @@ export default function ComparisonPage() {
 
           <div className={styles.calcNoteRow}>
             <p className={styles.calcNote}>
-              * Konkurrentpriser omregnet fra USD til DKK (ca. 1 USD = 7 DKK) og er vejledende.{' '}
+              * Konkurrentpriser omregnet fra USD til DKK (ca. 1 USD = 7 DKK) og er vejledende. Alle priser er eks. moms.{' '}
               {competitors.map((c, i) => (
                 <span key={c.name}>{c.name}: {c.usd}{i < competitors.length - 1 ? ' · ' : ''}</span>
               ))}
