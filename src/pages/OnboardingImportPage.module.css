@@ -1,0 +1,433 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 48px 24px;
+}
+
+.inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+/* ── Head ── */
+.head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 4px;
+  width: fit-content;
+  transition: color 0.15s;
+}
+
+.backLink:hover {
+  color: var(--text-sub);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* ── Sections ── */
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stepNum {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-sub);
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.formatPills {
+  display: inline-flex;
+  gap: 5px;
+  margin-left: 4px;
+}
+
+.fmt {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Completed imports ── */
+.importedList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.importedItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--accent-subtle, rgba(61, 112, 52, 0.08));
+  border: 1px solid var(--accent-border, rgba(61, 112, 52, 0.2));
+  border-radius: 8px;
+}
+
+.importedCheck {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.importedText {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+
+.importedText strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Vault picker ── */
+.vaultsLoading {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+
+.noVaults {
+  font-size: 13.5px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.inlineLink {
+  color: var(--accent-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vaultChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vaultChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.vaultChip:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.vaultChipSelected {
+  border-color: var(--accent);
+  background: var(--accent-subtle, rgba(61, 112, 52, 0.1));
+  color: var(--accent-light);
+}
+
+.chipIcon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.vaultChipSelected .chipIcon {
+  opacity: 1;
+}
+
+/* ── Drop zone ── */
+.dropZone {
+  width: 100%;
+  min-height: 140px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  outline: none;
+}
+
+.dropZone:hover,
+.dropZone:focus-visible {
+  border-color: var(--accent);
+  background: var(--surface-raised);
+}
+
+.dropZoneDragging {
+  border-color: var(--accent);
+  background: var(--accent-subtle, rgba(61, 112, 52, 0.08));
+}
+
+.dropZoneHasFile {
+  cursor: default;
+  border-style: solid;
+  border-color: var(--border-strong);
+}
+
+.fileInput {
+  display: none;
+}
+
+/* ── Drop prompt ── */
+.dropPrompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 24px;
+}
+
+.dropIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.dropText {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-sub);
+}
+
+.dropOr {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.dropBrowse {
+  color: var(--accent-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── File preview ── */
+.filePreview {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileIconWrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  background: var(--accent-subtle, rgba(61, 112, 52, 0.12));
+  border: 1px solid var(--accent-border, rgba(61, 112, 52, 0.25));
+  color: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.fileName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.fileSize {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.removeFileBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.removeFileBtn:hover {
+  background: rgba(224, 92, 92, 0.1);
+  border-color: rgba(224, 92, 92, 0.3);
+  color: #e05c5c;
+}
+
+.error {
+  font-size: 13px;
+  color: #e05c5c;
+  background: rgba(224, 92, 92, 0.08);
+  border: 1px solid rgba(224, 92, 92, 0.18);
+  border-radius: 8px;
+  padding: 9px 13px;
+  width: 100%;
+  margin-top: -8px;
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.importBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.importBtn:hover:not(:disabled) {
+  background: var(--surface-raised);
+  border-color: var(--accent);
+}
+
+.importBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.continueBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, gap 0.15s;
+}
+
+.continueBtn:hover {
+  background: var(--accent-hover);
+  gap: 12px;
+}
+
+
+@media (max-width: 480px) {
+  .title { font-size: 22px; }
+}

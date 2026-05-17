@@ -130,7 +130,7 @@ function ComparisonTeaser() {
                 style={{ width: `${Math.max(4, (lockmate.price / maxCost) * 100)}%` }}
               />
             </div>
-            <span className={styles.rowPrice}>{lockmate.price} kr/md.</span>
+            <span className={styles.rowPrice}>{lockmate.price} kr/md. <span className={styles.rowVat}>eks. moms</span></span>
           </div>
 
           {compPrices.map(c => (
@@ -261,6 +261,7 @@ export default function PricingPage() {
                   </span>
                   <span className={styles.priceSuffix}> kr / md.</span>
                 </div>
+                <span className={styles.vatNote}>eks. moms</span>
                 {annual && (
                   <span className={styles.billedNote}>Faktureres årligt</span>
                 )}

@@ -73,6 +73,7 @@ export default function PricingSection() {
                     <span className={styles.priceAmount}>{plan.price}</span>
                     <span className={styles.pricePer}> / md.</span>
                   </div>
+                  <span className={styles.vatNote}>eks. moms</span>
                   <p className={styles.planDesc}>{plan.desc}</p>
                 </div>
                 <div className={`${styles.divider} ${plan.dark ? styles.dividerDark : ''}`} />

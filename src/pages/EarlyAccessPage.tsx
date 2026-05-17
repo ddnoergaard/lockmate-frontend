@@ -7,12 +7,14 @@ import styles from './EarlyAccessPage.module.css'
 import { API_BASE } from '../config'
 
 export default function EarlyAccessPage() {
-  const [email,     setEmail]     = useState('')
-  const [loading,   setLoading]   = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error,     setError]     = useState('')
+  const [email,          setEmail]          = useState('')
+  const [consent,        setConsent]        = useState(false)
+  const [consentTouched, setConsentTouched] = useState(false)
+  const [loading,        setLoading]        = useState(false)
+  const [submitted,      setSubmitted]      = useState(false)
+  const [error,          setError]          = useState('')
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     setError('')
 
@@ -21,13 +23,17 @@ export default function EarlyAccessPage() {
       setError('Indtast venligst en gyldig e-mailadresse.')
       return
     }
+    if (!consent) {
+      setConsentTouched(true)
+      return
+    }
 
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/api/early-access`, {
+      const res = await fetch(`${API_BASE}/api/user/early_access`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmed }),
+        body: JSON.stringify({ email: trimmed, consent: true }),
       })
 
       if (!res.ok) {
@@ -98,6 +104,19 @@ export default function EarlyAccessPage() {
                   {loading ? 'Sender…' : 'Skriv mig op'}
                 </button>
               </div>
+
+              <label className={`${styles.consentLabel} ${consentTouched && !consent ? styles.consentLabelError : ''}`}>
+                <input
+                  type="checkbox"
+                  className={`${styles.consentCheckbox} ${consentTouched && !consent ? styles.consentCheckboxError : ''}`}
+                  checked={consent}
+                  onChange={e => { setConsent(e.target.checked); if (e.target.checked) setConsentTouched(false) }}
+                />
+                <span className={styles.consentText}>
+                  Jeg giver samtykke til at modtage én e-mail fra Lockmate når vi går live. Ingen spam.
+                </span>
+              </label>
+
               {error && <p className={styles.error}>{error}</p>}
             </form>
           </>

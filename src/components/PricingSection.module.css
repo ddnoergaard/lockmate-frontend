@@ -168,6 +168,12 @@
   color: var(--text-muted);
 }
 
+.vatNote {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
 .planDesc {
   font-size: 13px;
   color: var(--text-sub);

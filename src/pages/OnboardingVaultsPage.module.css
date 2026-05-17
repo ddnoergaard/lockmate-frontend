@@ -1,0 +1,291 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 48px 24px;
+}
+
+.inner {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+/* ── Head ── */
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── Input ── */
+.inputRow {
+  width: 100%;
+  display: flex;
+  gap: 0;
+}
+
+.input {
+  flex: 1;
+  height: 50px;
+  padding: 0 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:focus {
+  border-color: var(--accent);
+  background: var(--surface-raised);
+}
+
+.addBtn {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  background: var(--accent);
+  border: none;
+  border-radius: 0 12px 12px 0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.addBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.addBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.error {
+  font-size: 13px;
+  color: #e05c5c;
+  background: rgba(224, 92, 92, 0.08);
+  border: 1px solid rgba(224, 92, 92, 0.18);
+  border-radius: 8px;
+  padding: 9px 13px;
+  width: 100%;
+  text-align: left;
+  margin-top: -12px;
+}
+
+/* ── Tiles section ── */
+.tilesSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.tilesLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ── Tile ── */
+.tile {
+  position: relative;
+  width: 88px;
+  height: 108px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 8px 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tile:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
+
+.tileIcon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Delete button (top-right corner, always visible) ── */
+.deleteBtn {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e05c5c;
+  border: 2px solid var(--bg);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  z-index: 1;
+  padding: 0;
+}
+
+.deleteBtn:hover {
+  background: #c94a4a;
+  transform: scale(1.1);
+}
+
+/* ── Edit button (bottom-right, hover only) ── */
+.editBtn {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  padding: 0;
+}
+
+.tile:hover .editBtn {
+  opacity: 1;
+}
+
+.editBtn:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+/* ── Tile name ── */
+.tileName {
+  font-size: 11.5px;
+  color: var(--text);
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.35;
+  max-width: 100%;
+  padding: 0 2px;
+}
+
+/* ── Inline edit input ── */
+.editForm {
+  width: 100%;
+  padding: 0 4px;
+}
+
+.editInput {
+  width: 100%;
+  background: var(--surface-raised);
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: 11.5px;
+  font-family: inherit;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.continueBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, gap 0.15s;
+}
+
+.continueBtn:hover {
+  background: var(--accent-hover);
+  gap: 12px;
+}
+
+.skipLink {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+
+.skipLink:hover {
+  color: var(--text-sub);
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 22px; }
+  .tile  { width: 78px; height: 96px; }
+}

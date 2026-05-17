@@ -64,7 +64,7 @@ export default function CreateOrganisationPage() {
       }
 
       await fetchAndStoreOrgId()
-      navigate('/app/dashboard')
+      navigate('/onboarding/vaults')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
     } finally {

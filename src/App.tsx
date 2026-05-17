@@ -19,6 +19,8 @@ import AboutPage from './pages/AboutPage'
 import FunctionPage from './pages/functions/FunctionPage'
 import ContactPage from './pages/ContactPage'
 import EarlyAccessPage from './pages/EarlyAccessPage'
+import OnboardingVaultsPage from './pages/OnboardingVaultsPage'
+import OnboardingImportPage from './pages/OnboardingImportPage'
 import AppLayout from './layouts/AppLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardPage from './pages/app/DashboardPage'
@@ -41,6 +43,8 @@ function App() {
         <Route path="/onboarding" element={<PageTransition><OnboardingPage /></PageTransition>} />
         <Route path="/onboarding/organisation" element={<PageTransition><CreateOrganisationPage /></PageTransition>} />
         <Route path="/onboarding/invite"       element={<PageTransition><InviteCodePage /></PageTransition>} />
+        <Route path="/onboarding/vaults"       element={<PageTransition><OnboardingVaultsPage /></PageTransition>} />
+        <Route path="/onboarding/import"       element={<PageTransition><OnboardingImportPage /></PageTransition>} />
         <Route path="/pricing"    element={<PageTransition><PricingPage /></PageTransition>} />
         <Route path="/pricing/comparison" element={<PageTransition><ComparisonPage /></PageTransition>} />
         <Route path="/about"         element={<PageTransition><AboutPage /></PageTransition>} />
