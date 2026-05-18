@@ -51,7 +51,7 @@ export default function EarlyAccessPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} data-theme="dark">
       <Helmet>
         <title>Early Access – Lockmate</title>
         <meta name="description" content="Skriv dig op til Lockmates early access og vær den første til at vide, hvornår vi går live." />
