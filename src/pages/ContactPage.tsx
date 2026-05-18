@@ -293,9 +293,9 @@ export default function ContactPage() {
                     className={`${styles.faqChevron} ${openFaq === i ? styles.faqChevronOpen : ''}`}
                   />
                 </button>
-                {openFaq === i && (
+                <div className={`${styles.faqAnswerWrap} ${openFaq === i ? styles.faqAnswerOpen : ''}`}>
                   <p className={styles.faqAnswer}>{item.a}</p>
-                )}
+                </div>
               </div>
             ))}
           </div>

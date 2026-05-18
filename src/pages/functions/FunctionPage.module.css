@@ -321,10 +321,22 @@
 .faqChevron {
   flex-shrink: 0;
   color: var(--text-muted);
-  transition: transform 0.2s;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.faqItemOpen .faqChevron { transform: rotate(180deg); }
+.faqChevronOpen { transform: rotate(180deg); }
+
+.faqAnswerWrap {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.36s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+}
+
+.faqAnswerOpen {
+  max-height: 300px;
+  opacity: 1;
+}
 
 .faqAnswer {
   font-size: 14px;

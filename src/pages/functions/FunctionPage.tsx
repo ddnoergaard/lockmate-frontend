@@ -10,12 +10,18 @@ import styles from './FunctionPage.module.css'
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className={`${styles.faqItem} ${open ? styles.faqItemOpen : ''}`}>
+    <div className={styles.faqItem}>
       <button className={styles.faqQuestion} onClick={() => setOpen(v => !v)}>
         <span>{q}</span>
-        <IconChevronDown size={16} strokeWidth={1.75} className={styles.faqChevron} />
+        <IconChevronDown
+          size={16}
+          strokeWidth={1.75}
+          className={`${styles.faqChevron} ${open ? styles.faqChevronOpen : ''}`}
+        />
       </button>
-      {open && <p className={styles.faqAnswer}>{a}</p>}
+      <div className={`${styles.faqAnswerWrap} ${open ? styles.faqAnswerOpen : ''}`}>
+        <p className={styles.faqAnswer}>{a}</p>
+      </div>
     </div>
   )
 }
