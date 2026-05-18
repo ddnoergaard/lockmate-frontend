@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
-import { IconChevronDown, IconMenu2, IconX } from '@tabler/icons-react'
+import { IconChevronDown, IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
+import logoLightSrc from '../assets/logo-light.svg'
+import { useTheme } from '../context/ThemeContext'
 import styles from './Navbar.module.css'
 
 const pricingLinks = [
@@ -111,6 +113,7 @@ function FeaturesDropdown() {
 }
 
 export default function Navbar() {
+  const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -125,7 +128,11 @@ export default function Navbar() {
       <div className={styles.wrapInner}>
         <nav className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ''}`}>
           <Link to="/" className={styles.logo}>
-            <img src={logoSrc} alt="Lockmate" className={`${styles.logoImg} ${scrolled ? styles.logoScrolled : ''}`} />
+            <img
+              src={theme === 'light' ? logoLightSrc : logoSrc}
+              alt="Lockmate"
+              className={`${styles.logoImg} ${scrolled ? styles.logoScrolled : ''}`}
+            />
           </Link>
 
           <ul className={styles.navLinks}>
@@ -137,6 +144,9 @@ export default function Navbar() {
           </ul>
 
           <div className={styles.actions}>
+            <button className={styles.themeToggle} onClick={toggle} aria-label="Skift tema">
+              {theme === 'dark' ? <IconSun size={16} strokeWidth={1.75} /> : <IconMoon size={16} strokeWidth={1.75} />}
+            </button>
             <Link to="/login" className={styles.loginBtn}>Log ind</Link>
             <Link to="/register" className={styles.ctaBtn}>Kom i gang</Link>
           </div>

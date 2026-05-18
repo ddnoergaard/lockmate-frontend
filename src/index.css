@@ -61,6 +61,37 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+[data-theme="light"] {
+  --bg:             #F5F5F3;
+  --surface:        #FFFFFF;
+  --surface-raised: #EFEFED;
+  --surface-high:   #E6E6E4;
+
+  --border:         #E2E2E0;
+  --border-strong:  #CCCCCA;
+
+  --text:           #1A1A18;
+  --text-sub:       #545452;
+  --text-muted:     #969694;
+
+  --accent:         #3D7035;
+  --accent-hover:   #4A8A40;
+  --accent-light:   #2D5C27;
+  --accent-subtle:  rgba(61, 112, 52, 0.08);
+  --accent-border:  rgba(61, 112, 52, 0.22);
+
+  --shadow-hard: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* ── Theme crossfade ── */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition-property: color, background-color, border-color, box-shadow, fill !important;
+  transition-duration: 0.3s !important;
+  transition-timing-function: ease !important;
+}
+
 body {
   margin: 0;
   background: var(--bg);

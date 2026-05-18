@@ -96,6 +96,22 @@
   background: var(--surface-raised);
 }
 
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--text-sub);
+  transition: background 0.15s, color 0.15s;
+}
+
+.themeToggle:hover {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
 .loginBtn {
   display: inline-flex;
   align-items: center;

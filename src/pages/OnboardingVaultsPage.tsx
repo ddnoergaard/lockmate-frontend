@@ -30,6 +30,7 @@ export default function OnboardingVaultsPage() {
   function handleAdd() {
     const name = input.trim()
     if (!name) return
+    if (vaults.length >= 50) { setError('Du kan højst oprette 50 vaults under onboarding.'); return }
     if (name.length > 30) { setError('Vault navn må højst være 30 tegn.'); return }
     setError('')
     setVaults(prev => [...prev, { localId: ++counter, name }])
@@ -64,17 +65,13 @@ export default function OnboardingVaultsPage() {
     setContinuing(true)
     try {
       const token = localStorage.getItem('token') ?? ''
-      const orgId = localStorage.getItem('orgId') ?? ''
-      const res = await fetch(`${API_BASE}/api/vault/create-batch`, {
+      const res = await fetch(`${API_BASE}/api/vault/onboarding-vault-create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          organisationId: orgId,
-          vaults: vaults.map(v => ({ name: v.name })),
-        }),
+        body: JSON.stringify(vaults.map(v => ({ name: v.name }))),
       })
       if (!res.ok) {
         const text = await res.text()
@@ -121,7 +118,7 @@ export default function OnboardingVaultsPage() {
           <button
             type="submit"
             className={styles.addBtn}
-            disabled={!input.trim()}
+            disabled={!input.trim() || vaults.length >= 50}
             aria-label="Tilføj vault"
           >
             <IconArrowNarrowRight size={18} strokeWidth={2} />
@@ -133,7 +130,7 @@ export default function OnboardingVaultsPage() {
         {/* Vault tiles */}
         {vaults.length > 0 && (
           <div className={styles.tilesSection}>
-            <span className={styles.tilesLabel}>Oprettede vaults:</span>
+            <span className={styles.tilesLabel}>Oprettede vaults: {vaults.length} / 50</span>
             <div className={styles.tiles}>
               {vaults.map(vault => (
                 <div key={vault.localId} className={styles.tile}>

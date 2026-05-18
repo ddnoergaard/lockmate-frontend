@@ -6,7 +6,7 @@ import {
 } from '@tabler/icons-react'
 import styles from './CreateOrganisationPage.module.css'
 import { API_BASE } from '../config'
-import { fetchAndStoreOrgId } from '../utils/fetchOrgId'
+import { storeTokenPayload } from '../utils/fetchOrgId'
 
 function getStoredUser() {
   try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
@@ -63,7 +63,11 @@ export default function CreateOrganisationPage() {
         return
       }
 
-      await fetchAndStoreOrgId()
+      const data = await res.json()
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+        storeTokenPayload(data.token)
+      }
       navigate('/onboarding/vaults')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')
