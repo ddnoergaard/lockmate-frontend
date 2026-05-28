@@ -3,10 +3,13 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
+import logoLightSrc from '../assets/logo-light.svg'
 import styles from './EarlyAccessPage.module.css'
 import { API_BASE } from '../config'
+import { useTheme } from '../context/ThemeContext'
 
 export default function EarlyAccessPage() {
+  const { theme } = useTheme()
   const [email,          setEmail]          = useState('')
   const [consent,        setConsent]        = useState(false)
   const [consentTouched, setConsentTouched] = useState(false)
@@ -59,7 +62,7 @@ export default function EarlyAccessPage() {
 
       <div className={styles.inner}>
         <Link to="/" className={styles.logo}>
-          <img src={logoSrc} alt="Lockmate" className={styles.logoImg} />
+          <img src={theme === 'light' ? logoLightSrc : logoSrc} alt="Lockmate" className={styles.logoImg} />
         </Link>
 
         {submitted ? (

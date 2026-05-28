@@ -171,22 +171,26 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   min-width: 280px;
+  padding-top: 8px;
+  z-index: 200;
+}
+
+.dropdownInner {
   background: var(--surface-high);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   padding: 6px;
   box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-  z-index: 200;
   animation: dropIn 0.12s cubic-bezier(0.4,0,0.2,1) both;
 }
 
 @keyframes dropIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .dropdownItem {
@@ -282,7 +286,6 @@
   display: flex;
   gap: 8px;
   padding: 8px 2px 2px;
-  border-top: 1px solid var(--border);
   margin-top: 4px;
 }
 

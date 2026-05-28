@@ -38,8 +38,7 @@ export default function OnboardingImportPage() {
     async function load() {
       try {
         const token = localStorage.getItem('token') ?? ''
-        const orgId = localStorage.getItem('orgId') ?? ''
-        const res = await fetch(`${API_BASE}/api/vault/list?organisationId=${orgId}`, {
+        const res = await fetch(`${API_BASE}/api/vault/vaults-by-orgId`, {
           headers: { 'Authorization': `Bearer ${token}` },
         })
         if (!res.ok) return

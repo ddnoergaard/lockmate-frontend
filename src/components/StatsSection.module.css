@@ -134,7 +134,6 @@
   flex-direction: column;
   gap: var(--space-xs);
   padding: var(--space-md) 0;
-  border-top: 1px solid var(--border);
 }
 
 .point:last-child {

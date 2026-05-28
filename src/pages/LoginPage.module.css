@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   background: var(--bg);
+  overflow-y: hidden;
 }
 
 /* ── Left — green panel ── */

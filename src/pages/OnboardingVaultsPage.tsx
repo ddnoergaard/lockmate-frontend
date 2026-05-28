@@ -57,7 +57,18 @@ export default function OnboardingVaultsPage() {
     if (continuing) return
     setError('')
 
-    if (vaults.length === 0) {
+    const pending = input.trim()
+    let finalVaults = vaults
+    if (pending) {
+      if (pending.length > 30) { setError('Vault navn må højst være 30 tegn.'); return }
+      if (vaults.length >= 50) { setError('Du kan højst oprette 50 vaults under onboarding.'); return }
+      const newVault = { localId: ++counter, name: pending }
+      finalVaults = [...vaults, newVault]
+      setVaults(finalVaults)
+      setInput('')
+    }
+
+    if (finalVaults.length === 0) {
       navigate('/onboarding/import')
       return
     }
@@ -71,7 +82,7 @@ export default function OnboardingVaultsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(vaults.map(v => ({ name: v.name }))),
+        body: JSON.stringify(finalVaults.map(v => ({ name: v.name }))),
       })
       if (!res.ok) {
         const text = await res.text()

@@ -1,6 +1,5 @@
 .footer {
   background: var(--surface);
-  border-top: 1px solid var(--border);
 }
 
 .inner {
@@ -95,7 +94,6 @@
 
 /* ── Bottom bar ── */
 .bottom {
-  border-top: 1px solid var(--border);
   padding: 20px 0;
   text-align: center;
 }

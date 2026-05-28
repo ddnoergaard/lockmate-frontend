@@ -22,23 +22,14 @@ const functions = [
 
 function PricingDropdown() {
   const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLLIElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function handle(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', handle)
-    return () => document.removeEventListener('mousedown', handle)
-  }, [open])
 
   return (
-    <li ref={ref} className={styles.dropdownWrap}>
-      <button
-        className={`${styles.link} ${open ? styles.linkActive : ''}`}
-        onClick={() => setOpen(v => !v)}
-      >
+    <li
+      className={styles.dropdownWrap}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className={`${styles.link} ${open ? styles.linkActive : ''}`}>
         Priser
         <IconChevronDown
           size={13}
@@ -49,17 +40,19 @@ function PricingDropdown() {
 
       {open && (
         <div className={styles.dropdown}>
-          {pricingLinks.map(({ to, name, desc }) => (
-            <Link
-              key={to}
-              to={to}
-              className={styles.dropdownItem}
-              onClick={() => setOpen(false)}
-            >
-              <span className={styles.dropdownName}>{name}</span>
-              <span className={styles.dropdownDesc}>{desc}</span>
-            </Link>
-          ))}
+          <div className={styles.dropdownInner}>
+            {pricingLinks.map(({ to, name, desc }) => (
+              <Link
+                key={to}
+                to={to}
+                className={styles.dropdownItem}
+                onClick={() => setOpen(false)}
+              >
+                <span className={styles.dropdownName}>{name}</span>
+                <span className={styles.dropdownDesc}>{desc}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </li>
@@ -68,23 +61,14 @@ function PricingDropdown() {
 
 function FeaturesDropdown() {
   const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLLIElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function handle(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', handle)
-    return () => document.removeEventListener('mousedown', handle)
-  }, [open])
 
   return (
-    <li ref={ref} className={styles.dropdownWrap}>
-      <button
-        className={`${styles.link} ${open ? styles.linkActive : ''}`}
-        onClick={() => setOpen(v => !v)}
-      >
+    <li
+      className={styles.dropdownWrap}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className={`${styles.link} ${open ? styles.linkActive : ''}`}>
         Features
         <IconChevronDown
           size={13}
@@ -95,17 +79,19 @@ function FeaturesDropdown() {
 
       {open && (
         <div className={styles.dropdown}>
-          {functions.map(({ slug, name, desc }) => (
-            <Link
-              key={slug}
-              to={`/features/${slug}`}
-              className={styles.dropdownItem}
-              onClick={() => setOpen(false)}
-            >
-              <span className={styles.dropdownName}>{name}</span>
-              <span className={styles.dropdownDesc}>{desc}</span>
-            </Link>
-          ))}
+          <div className={styles.dropdownInner}>
+            {functions.map(({ slug, name, desc }) => (
+              <Link
+                key={slug}
+                to={`/features/${slug}`}
+                className={styles.dropdownItem}
+                onClick={() => setOpen(false)}
+              >
+                <span className={styles.dropdownName}>{name}</span>
+                <span className={styles.dropdownDesc}>{desc}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </li>

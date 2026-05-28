@@ -244,7 +244,6 @@ a.channelValue:hover { color: var(--accent-light); }
 /* ── Interest section ── */
 .interestSection {
   padding: var(--section-pad);
-  border-top: 1px solid var(--border);
   background: var(--surface);
 }
 
@@ -365,7 +364,6 @@ a.channelValue:hover { color: var(--accent-light); }
   max-width: 760px;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--border);
 }
 
 .faqItem {

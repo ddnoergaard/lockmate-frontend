@@ -89,7 +89,6 @@
 
 /* ── Calculator ── */
 .calcSection {
-  border-top: 1px solid var(--border);
   padding: 0 40px;
 }
 
@@ -364,7 +363,6 @@
 
 /* ── Feature table ── */
 .featureSection {
-  border-top: 1px solid var(--border);
   padding: 0 40px;
 }
 
@@ -493,7 +491,6 @@
 
 /* ── Why section ── */
 .whySection {
-  border-top: 1px solid var(--border);
   padding: 0 40px;
 }
 
@@ -590,7 +587,6 @@
 
 /* ── CTA section ── */
 .ctaSection {
-  border-top: 1px solid var(--border);
   padding: 0 40px;
 }
 
