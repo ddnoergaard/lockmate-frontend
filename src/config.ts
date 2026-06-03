@@ -1,1 +1,1 @@
-export const API_BASE = 'https://api.lockmate.dk/'
+export const API_BASE = 'https://api.lockmate.dk'
