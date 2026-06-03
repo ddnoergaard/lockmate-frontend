@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { IconChevronDown, IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react'
