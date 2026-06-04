@@ -8,7 +8,6 @@ import {
   IconDots,
   IconShieldLock,
   IconChevronDown,
-  IconChevronRight,
 } from '@tabler/icons-react'
 import styles from './VaultPage.module.css'
 
@@ -75,10 +74,11 @@ function VaultSection({ vault, search }: { vault: typeof vaultData[0]; search: s
     <div className={styles.vaultSection}>
       <button className={styles.vaultHeader} onClick={() => setCollapsed((c) => !c)}>
         <div className={styles.vaultHeaderLeft}>
-          {collapsed
-            ? <IconChevronRight size={14} strokeWidth={2} className={styles.chevron} />
-            : <IconChevronDown  size={14} strokeWidth={2} className={styles.chevron} />
-          }
+          <IconChevronDown
+            size={14}
+            strokeWidth={2}
+            className={`${styles.chevron} ${collapsed ? styles.chevronCollapsed : ''}`}
+          />
           <IconShieldLock size={15} strokeWidth={1.75} className={styles.vaultIcon} />
           <span className={styles.vaultName}>{vault.name}</span>
           <span className={styles.vaultMeta}>{vault.credentials.length} loginoplysning{vault.credentials.length !== 1 ? 'er' : ''}</span>
@@ -90,8 +90,13 @@ function VaultSection({ vault, search }: { vault: typeof vaultData[0]; search: s
         </button>
       </button>
 
-      {!collapsed && (
+      <div className={`${styles.credListWrap} ${collapsed ? '' : styles.credListOpen}`}>
         <div className={styles.credList}>
+          <div className={styles.credHeader}>
+            <span className={styles.credHeaderCell}>Navn</span>
+            <span className={styles.credHeaderCell}>Brugernavn</span>
+            <span className={styles.credHeaderCell}>Opdateret</span>
+          </div>
           {filtered.length === 0 ? (
             <div className={styles.emptyVault}>Ingen loginoplysninger i denne vault endnu.</div>
           ) : (
@@ -115,7 +120,7 @@ function VaultSection({ vault, search }: { vault: typeof vaultData[0]; search: s
             })
           )}
         </div>
-      )}
+      </div>
     </div>
   )
 }

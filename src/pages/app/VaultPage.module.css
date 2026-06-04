@@ -127,6 +127,11 @@
 .chevron {
   color: var(--text-muted);
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.chevronCollapsed {
+  transform: rotate(-90deg);
 }
 
 .vaultIcon {
@@ -172,9 +177,38 @@
 }
 
 /* ── Credential rows ── */
+.credListWrap {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+
+.credListOpen {
+  max-height: 2000px;
+  opacity: 1;
+}
+
 .credList {
   display: flex;
   flex-direction: column;
+}
+
+.credHeader {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.2fr 40px;
+  padding: 0 16px 0 40px;
+  height: 32px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.credHeaderCell {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .credRow {
