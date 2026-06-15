@@ -21,7 +21,7 @@ async function pbkdf2(password: string, salt: Uint8Array): Promise<ArrayBuffer> 
     ['deriveBits'],
   )
   return crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt: salt as unknown as ArrayBuffer, iterations: 100_000, hash: 'SHA-256' },
     keyMaterial,
     256,
   )
@@ -31,7 +31,7 @@ async function pbkdf2(password: string, salt: Uint8Array): Promise<ArrayBuffer> 
 export async function prepareRegistration(password: string): Promise<{ derivedPassword: string; salt: string }> {
   const salt = generateSalt()
   const derived = await pbkdf2(password, salt)
-  return { derivedPassword: toBase64(derived), salt: toBase64(salt) }
+  return { derivedPassword: toBase64(derived), salt: toBase64(salt.buffer as ArrayBuffer) }
 }
 
 // Login: derive key from password using the salt fetched from the server.
