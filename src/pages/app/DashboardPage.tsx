@@ -48,26 +48,26 @@ export default function DashboardPage() {
   const [credentialCount, setCredentialCount] = useState<number | null>(null)
   const [vaultCount,      setVaultCount]      = useState<number | null>(null)
   const [memberCount,     setMemberCount]     = useState<number | null>(null)
-  const hasOrg = !!localStorage.getItem('orgId')
+  const orgId = localStorage.getItem('orgId')
+  const hasOrg = !!orgId && orgId !== '0'
 
   useEffect(() => {
     const token = localStorage.getItem('token') ?? ''
-    const orgId = localStorage.getItem('orgId')
-    if (!orgId) return
+    if (!hasOrg) return
 
     const headers = { 'Authorization': `Bearer ${token}` }
 
-    fetch(`${API_BASE}/api/Credential/get-credential-count?orgId=${orgId}`, { headers })
+    fetch(`${API_BASE}/api/Credential/get-credential-count?orgId=${orgId!}`, { headers })
       .then(res => res.ok ? res.json() : null)
       .then(count => { if (count !== null) setCredentialCount(count) })
       .catch(() => {})
 
-    fetch(`${API_BASE}/api/vault/get-count?orgId=${orgId}`, { headers })
+    fetch(`${API_BASE}/api/vault/get-count?orgId=${orgId!}`, { headers })
       .then(res => res.ok ? res.json() : null)
       .then(count => { if (count !== null) setVaultCount(count) })
       .catch(() => {})
 
-    fetch(`${API_BASE}/api/organisation/get-member-count?orgId=${orgId}`, { headers })
+    fetch(`${API_BASE}/api/organisation/get-member-count?orgId=${orgId!}`, { headers })
       .then(res => res.ok ? res.json() : null)
       .then(count => { if (count !== null) setMemberCount(count) })
       .catch(() => {})
@@ -101,7 +101,7 @@ export default function DashboardPage() {
           <IconInfoCircle size={16} strokeWidth={1.75} className={styles.noOrgIcon} />
           <span className={styles.noOrgText}>
             Du er ikke en del af nogen organisation endnu.{' '}
-            <Link to="/onboarding" className={styles.noOrgLink}>Opret eller tilslut dig en for at komme i gang.</Link>
+            <Link to="/app/organisation/setup" className={styles.noOrgLink}>Opret eller tilslut dig en for at komme i gang.</Link>
           </span>
         </div>
       )}

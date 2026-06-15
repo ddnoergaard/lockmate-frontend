@@ -7,6 +7,7 @@ import {
 } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
 import { API_BASE } from '../config'
+import { prepareRegistration } from '../utils/crypto'
 import styles from './RegisterPage.module.css'
 
 const months = [
@@ -60,10 +61,18 @@ export default function RegisterPage() {
       parseInt(form.birthYear),
       parseInt(form.birthMonth) - 1,
       parseInt(form.birthDay),
-    ).toISOString()
+    )
+
+    const minAge = new Date()
+    minAge.setFullYear(minAge.getFullYear() - 16)
+    if (birthDate > minAge) {
+      setError('Du skal være mindst 16 år for at oprette en konto.')
+      return
+    }
 
     setLoading(true)
     try {
+      const { derivedPassword, salt } = await prepareRegistration(form.password)
       const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,9 +80,10 @@ export default function RegisterPage() {
           firstName: form.firstName,
           lastName:  form.lastName,
           email:     form.email,
-          password:  form.password,
+          password:  derivedPassword,
           phone:     form.phone,
-          birthDate,
+          birthDate: birthDate.toISOString(),
+          salt,
         }),
       })
 

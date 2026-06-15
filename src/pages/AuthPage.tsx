@@ -9,6 +9,7 @@ import logoSrc from '../assets/logo.svg'
 import styles from './AuthPage.module.css'
 import { API_BASE } from '../config'
 import { storeTokenPayload } from '../utils/fetchOrgId'
+import { prepareLogin } from '../utils/crypto'
 
 export default function AuthPage() {
   const navigate = useNavigate()
@@ -29,10 +30,18 @@ export default function AuthPage() {
 
     setLoading(true)
     try {
+      const saltRes = await fetch(`${API_BASE}/api/auth/salt?email=${encodeURIComponent(email)}`)
+      if (!saltRes.ok) {
+        setError('Forkert email eller adgangskode.')
+        return
+      }
+      const salt = await saltRes.text()
+      const derivedPassword = await prepareLogin(password, salt)
+
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password: derivedPassword }),
       })
 
       if (!res.ok) {

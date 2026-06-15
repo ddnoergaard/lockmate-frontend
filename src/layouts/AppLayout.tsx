@@ -10,8 +10,13 @@ import {
   IconSelector,
   IconUserCircle,
   IconCheck,
+  IconPlus,
 } from '@tabler/icons-react'
+import { Link } from 'react-router-dom'
 import styles from './AppLayout.module.css'
+import { API_BASE } from '../config'
+
+interface UserOrg { id: number; name: string }
 
 const navItems = [
   { to: '/app/dashboard',     icon: IconLayoutDashboard, label: 'Dashboard'       },
@@ -20,11 +25,12 @@ const navItems = [
   { to: '/app/organisation',  icon: IconBuilding,        label: 'Organisation'    },
 ]
 
-const orgs = [
-  { id: 1, name: 'Acme Corp',       initials: 'A'  },
-  { id: 2, name: 'Daniel Personal', initials: 'D'  },
-  { id: 3, name: 'Side Project',    initials: 'SP' },
-]
+function initials(name: string): string {
+  const words = name.trim().split(/\s+/)
+  return words.length === 1
+    ? words[0].slice(0, 2).toUpperCase()
+    : words.slice(0, 2).map(w => w[0].toUpperCase()).join('')
+}
 
 function ContentTransition() {
   const { pathname } = useLocation()
@@ -35,12 +41,13 @@ function ContentTransition() {
   )
 }
 
-function OrgSelector() {
+function OrgSelector({ orgs }: { orgs: UserOrg[] }) {
+  const storedId = Number(localStorage.getItem('orgId') ?? 0)
   const [open, setOpen]       = useState(false)
-  const [activeId, setActiveId] = useState(1)
+  const [activeId, setActiveId] = useState(storedId)
   const ref = useRef<HTMLDivElement>(null)
 
-  const active = orgs.find(o => o.id === activeId)!
+  const active = orgs.find(o => o.id === activeId) ?? orgs[0]
 
   useEffect(() => {
     if (!open) return
@@ -53,16 +60,42 @@ function OrgSelector() {
 
   function select(id: number) {
     setActiveId(id)
+    localStorage.setItem('orgId', String(id))
     setOpen(false)
   }
 
+  // No orgs
+  if (orgs.length === 0) {
+    return (
+      <div className={styles.orgSelectorWrap}>
+        <div className={`${styles.orgSelector} ${styles.orgSelectorEmpty}`}>
+          <span className={styles.orgAvatarEmpty} />
+          <span className={styles.orgNameEmpty}>Ingen organisation</span>
+        </div>
+      </div>
+    )
+  }
+
+  // Single org — just display, no dropdown
+  if (orgs.length === 1) {
+    return (
+      <div className={styles.orgSelectorWrap}>
+        <div className={styles.orgSelector}>
+          <span className={styles.orgAvatar}>{initials(active.name)}</span>
+          <span className={styles.orgName}>{active.name}</span>
+        </div>
+      </div>
+    )
+  }
+
+  // Multiple orgs — full selector
   return (
     <div className={styles.orgSelectorWrap} ref={ref}>
       <button
         className={`${styles.orgSelector} ${open ? styles.orgSelectorOpen : ''}`}
         onClick={() => setOpen(v => !v)}
       >
-        <span className={styles.orgAvatar}>{active.initials}</span>
+        <span className={styles.orgAvatar}>{initials(active.name)}</span>
         <span className={styles.orgName}>{active.name}</span>
         <IconSelector size={14} className={styles.orgChevron} />
       </button>
@@ -76,7 +109,7 @@ function OrgSelector() {
               className={`${styles.orgDropdownItem} ${o.id === activeId ? styles.orgDropdownItemActive : ''}`}
               onClick={() => select(o.id)}
             >
-              <span className={styles.orgDropdownAvatar}>{o.initials}</span>
+              <span className={styles.orgDropdownAvatar}>{initials(o.name)}</span>
               <span className={styles.orgDropdownName}>{o.name}</span>
               {o.id === activeId && <IconCheck size={13} strokeWidth={2.5} className={styles.orgDropdownCheck} />}
             </button>
@@ -90,6 +123,17 @@ function OrgSelector() {
 export default function AppLayout() {
   const navigate = useNavigate()
   const [loggingOut, setLoggingOut] = useState(false)
+  const [orgs, setOrgs] = useState<UserOrg[]>([])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') ?? ''
+    fetch(`${API_BASE}/api/organisation/user-orgs`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+      .then(res => res.ok ? res.json() : [])
+      .then((data: UserOrg[]) => setOrgs(data))
+      .catch(() => {})
+  }, [])
 
   function logout() {
     setLoggingOut(true)
@@ -111,7 +155,16 @@ export default function AppLayout() {
       <aside className={styles.sidebar}>
 
         {/* Org selector */}
-        <OrgSelector />
+        <div className={styles.orgSelectorRow}>
+          <OrgSelector orgs={orgs} />
+          <Link
+            to="/app/organisation/setup"
+            className={styles.addOrgBtn}
+            title="Opret ny organisation"
+          >
+            <IconPlus size={14} strokeWidth={2.5} />
+          </Link>
+        </div>
 
         {/* Main nav */}
         <nav className={styles.nav}>

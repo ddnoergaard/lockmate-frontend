@@ -7,6 +7,55 @@
   gap: 20px;
 }
 
+/* ── Empty state ── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  gap: 14px;
+}
+
+.emptyIcon {
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.4px;
+}
+
+.emptyDesc {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.emptyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.emptyBtn:hover {
+  background: var(--accent-hover);
+}
+
 /* ── Header ── */
 .pageHeader {
   display: flex;

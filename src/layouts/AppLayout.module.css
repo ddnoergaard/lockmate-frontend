@@ -44,6 +44,39 @@
 }
 
 /* ── Org selector ── */
+.orgSelectorRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.orgSelectorRow .orgSelectorWrap {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.addOrgBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.addOrgBtn:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
 .orgSelectorWrap {
   position: relative;
   margin-bottom: 12px;
@@ -67,6 +100,30 @@
 .orgSelectorOpen {
   background: var(--surface-raised);
   border-color: var(--border-strong);
+}
+
+.orgSelectorEmpty {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.orgSelectorEmpty:hover {
+  background: none;
+  border-color: var(--border);
+}
+
+.orgAvatarEmpty {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.orgNameEmpty {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .orgDropdown {

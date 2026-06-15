@@ -22,6 +22,7 @@ import {
   IconX,
 } from '@tabler/icons-react'
 import styles from './OrganisationPage.module.css'
+import { Link } from 'react-router-dom'
 
 const org = {
   name: 'Acme Corp',
@@ -225,6 +226,32 @@ function MemberMenu() {
 }
 
 export default function OrganisationPage() {
+  const orgId = localStorage.getItem('orgId')
+  const hasOrg = !!orgId && orgId !== '0'
+
+  if (!hasOrg) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.pageHeader}>
+          <div>
+            <h1 className={styles.pageTitle}>Organisation</h1>
+            <p className={styles.pageSubtitle}>Oversigt over din organisation, plan og forbrug.</p>
+          </div>
+        </div>
+        <div className={styles.emptyState}>
+          <IconBuilding size={32} strokeWidth={1.25} className={styles.emptyIcon} />
+          <h2 className={styles.emptyTitle}>Ingen organisation endnu</h2>
+          <p className={styles.emptyDesc}>
+            Du er ikke tilknyttet nogen organisation. Opret en ny eller tilslut dig en eksisterende for at komme i gang.
+          </p>
+          <Link to="/app/organisation/setup" className={styles.emptyBtn}>
+            Opret organisation
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.page}>
 

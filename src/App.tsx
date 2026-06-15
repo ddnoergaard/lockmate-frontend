@@ -29,6 +29,11 @@ import VaultPage from './pages/app/VaultPage'
 import OrganisationPage from './pages/app/OrganisationPage'
 import AccountPage from './pages/app/AccountPage'
 import SettingsPage from './pages/app/SettingsPage'
+import AppOrgSetupPage from './pages/app/AppOrgSetupPage'
+import AppOrgCreatePage from './pages/app/AppOrgCreatePage'
+import AppOrgJoinPage from './pages/app/AppOrgJoinPage'
+import AppOrgVaultsPage from './pages/app/AppOrgVaultsPage'
+import AppOrgImportPage from './pages/app/AppOrgImportPage'
 import './index.css'
 
 function App() {
@@ -59,7 +64,12 @@ function App() {
             <Route path="dashboard"    element={<DashboardPage />} />
             <Route path="credentials"  element={<CredentialsPage />} />
             <Route path="vault"        element={<VaultPage />} />
-            <Route path="organisation" element={<OrganisationPage />} />
+            <Route path="organisation"         element={<OrganisationPage />} />
+            <Route path="organisation/setup"  element={<AppOrgSetupPage />} />
+            <Route path="organisation/create" element={<AppOrgCreatePage />} />
+            <Route path="organisation/join"   element={<AppOrgJoinPage />} />
+            <Route path="organisation/vaults" element={<AppOrgVaultsPage />} />
+            <Route path="organisation/import" element={<AppOrgImportPage />} />
             <Route path="account"      element={<AccountPage />} />
             <Route path="settings"     element={<SettingsPage />} />
           </Route>
