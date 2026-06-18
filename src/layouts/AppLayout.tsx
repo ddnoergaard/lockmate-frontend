@@ -15,6 +15,7 @@ import {
 import { Link } from 'react-router-dom'
 import styles from './AppLayout.module.css'
 import { API_BASE } from '../config'
+import { OrgStatsProvider, useOrgStats } from '../contexts/OrgStatsContext'
 
 interface UserOrg { id: number; name: string }
 
@@ -42,9 +43,9 @@ function ContentTransition() {
 }
 
 function OrgSelector({ orgs }: { orgs: UserOrg[] }) {
-  const storedId = Number(localStorage.getItem('orgId') ?? 0)
-  const [open, setOpen]       = useState(false)
-  const [activeId, setActiveId] = useState(storedId)
+  const { orgId, setOrgId } = useOrgStats()
+  const activeId = orgId ? Number(orgId) : (orgs[0]?.id ?? 0)
+  const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   const active = orgs.find(o => o.id === activeId) ?? orgs[0]
@@ -59,8 +60,7 @@ function OrgSelector({ orgs }: { orgs: UserOrg[] }) {
   }, [open])
 
   function select(id: number) {
-    setActiveId(id)
-    localStorage.setItem('orgId', String(id))
+    setOrgId(String(id))
     setOpen(false)
   }
 
@@ -120,7 +120,7 @@ function OrgSelector({ orgs }: { orgs: UserOrg[] }) {
   )
 }
 
-export default function AppLayout() {
+function AppLayoutInner() {
   const navigate = useNavigate()
   const [loggingOut, setLoggingOut] = useState(false)
   const [orgs, setOrgs] = useState<UserOrg[]>([])
@@ -140,7 +140,6 @@ export default function AppLayout() {
     setTimeout(() => {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      localStorage.removeItem('orgId')
       navigate('/')
     }, 750)
   }
@@ -218,5 +217,13 @@ export default function AppLayout() {
         <ContentTransition />
       </main>
     </div>
+  )
+}
+
+export default function AppLayout() {
+  return (
+    <OrgStatsProvider>
+      <AppLayoutInner />
+    </OrgStatsProvider>
   )
 }

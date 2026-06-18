@@ -6,7 +6,6 @@ import {
 } from '@tabler/icons-react'
 import styles from './CreateOrganisationPage.module.css'
 import { API_BASE } from '../config'
-import { storeTokenPayload } from '../utils/fetchOrgId'
 
 function getStoredUser() {
   try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
@@ -66,7 +65,6 @@ export default function CreateOrganisationPage() {
       const data = await res.json()
       if (data.token) {
         localStorage.setItem('token', data.token)
-        storeTokenPayload(data.token)
       }
       navigate('/onboarding/vaults')
     } catch {

@@ -44,6 +44,15 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
 
+    if (!form.firstName.trim()) { setError('Fornavn er påkrævet.'); return }
+    if (!form.lastName.trim())  { setError('Efternavn er påkrævet.'); return }
+    if (!form.email.trim())     { setError('E-mailadresse er påkrævet.'); return }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError('Indtast en gyldig e-mailadresse.')
+      return
+    }
+    if (!form.password) { setError('Adgangskode er påkrævet.'); return }
+    if (form.password.length < 12) { setError('Adgangskoden skal være mindst 12 tegn.'); return }
     if (form.password !== form.confirmPassword) {
       setError('Adgangskoderne stemmer ikke overens.')
       return

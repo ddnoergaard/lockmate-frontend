@@ -1,18 +1,10 @@
-import { useEffect, useState } from 'react'
 import {
-  IconKey,
-  IconShieldLock,
-  IconUsers,
-  IconAlertTriangle,
-  IconPlus,
-  IconArrowUp,
-  IconArrowDown,
-  IconMinus,
-  IconInfoCircle,
+  IconKey, IconShieldLock, IconUsers, IconAlertTriangle, IconPlus,
+  IconArrowUp, IconArrowDown, IconMinus, IconInfoCircle,
 } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 import styles from './DashboardPage.module.css'
-import { API_BASE } from '../../config'
+import { useOrgStats } from '../../contexts/OrgStatsContext'
 
 const vaultDistribution = [
   { name: 'Engineering', value: 9,  color: '#8BBF75' },
@@ -45,33 +37,8 @@ const TrendIcon = ({ trend }: { trend: string }) => {
 }
 
 export default function DashboardPage() {
-  const [credentialCount, setCredentialCount] = useState<number | null>(null)
-  const [vaultCount,      setVaultCount]      = useState<number | null>(null)
-  const [memberCount,     setMemberCount]     = useState<number | null>(null)
-  const orgId = localStorage.getItem('orgId')
-  const hasOrg = !!orgId && orgId !== '0'
-
-  useEffect(() => {
-    const token = localStorage.getItem('token') ?? ''
-    if (!hasOrg) return
-
-    const headers = { 'Authorization': `Bearer ${token}` }
-
-    fetch(`${API_BASE}/api/Credential/get-credential-count?orgId=${orgId!}`, { headers })
-      .then(res => res.ok ? res.json() : null)
-      .then(count => { if (count !== null) setCredentialCount(count) })
-      .catch(() => {})
-
-    fetch(`${API_BASE}/api/vault/get-count?orgId=${orgId!}`, { headers })
-      .then(res => res.ok ? res.json() : null)
-      .then(count => { if (count !== null) setVaultCount(count) })
-      .catch(() => {})
-
-    fetch(`${API_BASE}/api/organisation/get-member-count?orgId=${orgId!}`, { headers })
-      .then(res => res.ok ? res.json() : null)
-      .then(count => { if (count !== null) setMemberCount(count) })
-      .catch(() => {})
-  }, [])
+  const { credentialCount, vaultCount, memberCount, orgId } = useOrgStats()
+  const hasOrg = !!orgId
 
   const stats = [
     { label: 'Loginoplysninger i alt', value: credentialCount !== null ? String(credentialCount) : '—', icon: IconKey           },

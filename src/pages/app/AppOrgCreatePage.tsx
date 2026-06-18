@@ -6,7 +6,7 @@ import {
 } from '@tabler/icons-react'
 import styles from '../CreateOrganisationPage.module.css'
 import { API_BASE } from '../../config'
-import { storeTokenPayload } from '../../utils/fetchOrgId'
+import { useOrgStats } from '../../contexts/OrgStatsContext'
 
 function getStoredUser() {
   try { return JSON.parse(localStorage.getItem('user') || '{}') } catch { return {} }
@@ -14,6 +14,7 @@ function getStoredUser() {
 
 export default function AppOrgCreatePage() {
   const navigate = useNavigate()
+  const { refreshFromToken } = useOrgStats()
   const user = getStoredUser()
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
@@ -54,7 +55,7 @@ export default function AppOrgCreatePage() {
       const data = await res.json()
       if (data.token) {
         localStorage.setItem('token', data.token)
-        storeTokenPayload(data.token)
+        refreshFromToken()
       }
       navigate('/app/organisation/vaults')
     } catch {

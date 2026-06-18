@@ -8,7 +8,6 @@ import {
 import logoSrc from '../assets/logo.svg'
 import styles from './AuthPage.module.css'
 import { API_BASE } from '../config'
-import { storeTokenPayload } from '../utils/fetchOrgId'
 import { prepareLogin } from '../utils/crypto'
 
 export default function AuthPage() {
@@ -52,7 +51,6 @@ export default function AuthPage() {
 
       const { token } = await res.json()
       localStorage.setItem('token', token)
-      storeTokenPayload(token)
       navigate('/app/dashboard')
     } catch {
       setError('Kunne ikke forbinde til serveren. Tjek din forbindelse.')

@@ -474,6 +474,12 @@
 }
 
 /* ── Access requests ── */
+.emptyTableText {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+
 .requestsCard {
   background: var(--surface);
   border: 1px solid var(--border);

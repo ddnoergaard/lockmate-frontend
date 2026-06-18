@@ -9,7 +9,6 @@ import {
   IconArrowRight,
   IconCheck,
   IconRefresh,
-  IconUserPlus,
   IconCrown,
   IconUser,
   IconDotsVertical,
@@ -23,6 +22,9 @@ import {
 } from '@tabler/icons-react'
 import styles from './OrganisationPage.module.css'
 import { Link } from 'react-router-dom'
+import { useOrgStats } from '../../contexts/OrgStatsContext'
+import { getTokenPayload } from '../../utils/fetchOrgId'
+import { API_BASE } from '../../config'
 
 const org = {
   name: 'Acme Corp',
@@ -43,31 +45,35 @@ const org = {
   vaults: { used: 6, limit: null },
 }
 
-const planFeatures = [
-  '1.000 loginoplysninger',
-  'Op til 10 brugere',
-  'Ubegrænsede enheder',
-  'Alt i Starter',
-  'Prioriteret support',
-  'Revisionslogge',
-]
+const planFeatures: Record<string, string[]> = {
+  Starter: [
+    'Op til 5 brugere',
+    'Ubegrænsede loginoplysninger',
+    'Ubegrænsede enheder',
+    'AES-256 kryptering',
+    'Adgangskodegenerator',
+    'Sikker deling',
+    'Browserudvidelse',
+  ],
+  Growth: [
+    'Op til 15 brugere',
+    'Ubegrænsede loginoplysninger',
+    'Alt i Starter',
+    'Brud-overvågning',
+    'Prioriteret support',
+  ],
+  Scale: [
+    'Op til 50 brugere',
+    'Ubegrænsede loginoplysninger',
+    'Alt i Growth',
+    'Revisionslogge',
+    'Dedikeret support',
+  ],
+}
 
-const initialRequests = [
-  { name: 'James Whitfield', email: 'james@whitfield.io',  requestedAt: '2 minutes ago'  },
-  { name: 'Priya Sharma',    email: 'priya@sharmatech.dk', requestedAt: '14 minutes ago' },
-  { name: 'Tom Eriksen',     email: 'tom.eriksen@mail.com', requestedAt: '1 hour ago'    },
-]
+const initialRequests: { name: string; email: string; requestedAt: string }[] = []
 
-const members = [
-  { name: 'Alice Johnson',  email: 'alice@acme.com',   role: 'Admin',  joined: 'Jan 12, 2025' },
-  { name: 'Bob Martinez',   email: 'bob@acme.com',     role: 'Member', joined: 'Jan 14, 2025' },
-  { name: 'Carol White',    email: 'carol@acme.com',   role: 'Member', joined: 'Feb 2, 2025'  },
-  { name: 'David Kim',      email: 'david@acme.com',   role: 'Member', joined: 'Feb 9, 2025'  },
-  { name: 'Eva Larsson',    email: 'eva@acme.com',     role: 'Member', joined: 'Feb 21, 2025' },
-  { name: 'Frank Osei',     email: 'frank@acme.com',   role: 'Member', joined: 'Mar 3, 2025'  },
-  { name: 'Grace Tan',      email: 'grace@acme.com',   role: 'Admin',  joined: 'Mar 15, 2025' },
-  { name: 'Henry Nguyen',   email: 'henry@acme.com',   role: 'Member', joined: 'Apr 1, 2025'  },
-]
+const members: { name: string; email: string; role: string; joined: string }[] = []
 
 function initials(name: string) {
   return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
@@ -108,8 +114,6 @@ function AccessRequests() {
     setRequests(r => r.filter(x => x.email !== email))
   }
 
-  if (requests.length === 0) return null
-
   return (
     <div className={styles.requestsCard}>
       <div className={styles.membersHeader}>
@@ -117,9 +121,12 @@ function AccessRequests() {
           <p className={styles.cardEyebrow}>Afventer</p>
           <h2 className={styles.cardTitle}>Adgangsanmodninger</h2>
         </div>
-        <span className={styles.requestsBadge}>{requests.length}</span>
+        {requests.length > 0 && <span className={styles.requestsBadge}>{requests.length}</span>}
       </div>
 
+      {requests.length === 0 ? (
+        <p className={styles.emptyTableText}>Ingen nye anmodninger</p>
+      ) : (
       <div className={styles.memberTable}>
         <div className={styles.requestTableHead}>
           <span>Anmoder</span>
@@ -149,6 +156,7 @@ function AccessRequests() {
           </div>
         ))}
       </div>
+      )}
     </div>
   )
 }
@@ -225,9 +233,52 @@ function MemberMenu() {
   )
 }
 
+interface OrgData {
+  name:           string
+  vatNumber:      string | null
+  email:          string | null
+  phone:          string | null
+  createdAt:      string
+  invitationCode: string
+  subscriptionId: number
+}
+
+interface SubInfo {
+  name:         string
+  price:        number
+  userCapacity: number
+}
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
 export default function OrganisationPage() {
-  const orgId = localStorage.getItem('orgId')
-  const hasOrg = !!orgId && orgId !== '0'
+  const { credentialCount, vaultCount, memberCount, orgId } = useOrgStats()
+  const hasOrg = !!orgId
+  const role = getTokenPayload().role
+  const canManageRequests = role === 'Admin' || role === 'Owner'
+  const [orgData, setOrgData] = useState<OrgData | null>(null)
+  const [subInfo, setSubInfo] = useState<SubInfo | null>(null)
+
+  useEffect(() => {
+    if (!hasOrg) return
+    const token = localStorage.getItem('token') ?? ''
+    fetch(`${API_BASE}/api/organisation/current-org-data`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then((data: OrgData | null) => {
+        if (!data) return
+        setOrgData(data)
+        return fetch(`${API_BASE}/api/subscription/sub-info?subId=${data.subscriptionId}`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        })
+      })
+      .then(r => r && r.ok ? r.json() : null)
+      .then((data: SubInfo | null) => { if (data) setSubInfo(data) })
+      .catch(() => {})
+  }, [hasOrg])
 
   if (!hasOrg) {
     return (
@@ -271,46 +322,36 @@ export default function OrganisationPage() {
           </div>
           <div className={styles.orgInfo}>
             <div className={styles.orgNameRow}>
-              <h2 className={styles.orgName}>{org.name}</h2>
-              <span className={styles.orgTypeBadge}>{org.isPersonal ? 'Personlig' : 'Erhverv'}</span>
+              <h2 className={styles.orgName}>{orgData?.name ?? org.name}</h2>
             </div>
-            <span className={styles.orgMeta}>lockhub.io/{org.slug}</span>
           </div>
         </div>
         <div className={styles.orgMetas}>
           <div className={styles.orgMetaItem}>
             <IconCalendar size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
-            Oprettet {org.createdAt}
-          </div>
-          <div className={styles.orgMetaItem}>
-            <IconUsers size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
-            {org.seats.used} members
+            Oprettet {orgData ? formatDate(orgData.createdAt) : org.createdAt}
           </div>
           <div className={styles.orgMetaItem}>
             <IconMail size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
-            {org.email}
+            {orgData ? (orgData.email ?? 'N/A') : org.email}
           </div>
-          {org.phone && (
-            <div className={styles.orgMetaItem}>
-              <IconPhone size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
-              {org.phone}
-            </div>
-          )}
-          {org.vatNumber && (
-            <div className={styles.orgMetaItem}>
-              <IconReceiptTax size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
-              {org.vatNumber}
-            </div>
-          )}
+          <div className={styles.orgMetaItem}>
+            <IconReceiptTax size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
+            {orgData ? (orgData.vatNumber ?? 'N/A') : org.vatNumber}
+          </div>
+          <div className={styles.orgMetaItem}>
+            <IconPhone size={13} strokeWidth={1.75} className={styles.orgMetaIcon} />
+            {orgData ? (orgData.phone ?? 'N/A') : org.phone}
+          </div>
         </div>
       </div>
 
       {/* ── Stats row ── */}
       <div className={styles.statsRow}>
         {[
-          { icon: IconKey,         label: 'Loginoplysninger', value: org.credentials.used },
-          { icon: IconShieldLock,  label: 'Vaults',           value: org.vaults.used      },
-          { icon: IconUsers,       label: 'Medlemmer',        value: org.seats.used       },
+          { icon: IconKey,        label: 'Loginoplysninger', value: credentialCount ?? org.credentials.used },
+          { icon: IconShieldLock, label: 'Vaults',           value: vaultCount      ?? org.vaults.used      },
+          { icon: IconUsers,      label: 'Medlemmer',        value: memberCount     ?? org.seats.used       },
         ].map(({ icon: Icon, label, value }) => (
           <div key={label} className={styles.statCard}>
             <div className={styles.statIcon}><Icon size={15} strokeWidth={1.75} /></div>
@@ -329,12 +370,12 @@ export default function OrganisationPage() {
               <p className={styles.cardEyebrow}>Fakturering</p>
               <h2 className={styles.cardTitle}>Nuværende plan</h2>
             </div>
-            <span className={styles.planBadge}>{org.plan}</span>
+            <span className={styles.planBadge}>{subInfo?.name ?? org.plan}</span>
           </div>
 
           <div className={styles.planDetails}>
             <div className={styles.planPrice}>
-              <span className={styles.planAmount}>{org.pricePerMonth}</span>
+              <span className={styles.planAmount}>{subInfo ? `${subInfo.price} kr` : org.pricePerMonth}</span>
               <span className={styles.planPer}> / md.</span>
             </div>
             <div className={styles.planMeta}>
@@ -350,7 +391,7 @@ export default function OrganisationPage() {
           </div>
 
           <div className={styles.planFeatures}>
-            {planFeatures.map((f) => (
+            {(planFeatures[subInfo?.name ?? ''] ?? []).map((f) => (
               <div key={f} className={styles.planFeatureRow}>
                 <IconCheck size={13} strokeWidth={2.5} className={styles.planCheck} />
                 <span>{f}</span>
@@ -376,7 +417,7 @@ export default function OrganisationPage() {
           </div>
 
           <div className={styles.usageList}>
-            <UsageBar label="Pladser"          used={org.seats.used}       limit={org.seats.limit}       />
+            <UsageBar label="Pladser"          used={memberCount ?? org.seats.used} limit={subInfo?.userCapacity ?? org.seats.limit} />
             <UsageBar label="Loginoplysninger" used={org.credentials.used} limit={org.credentials.limit} />
             <UsageBar label="Vaults"           used={org.vaults.used}      limit={org.vaults.limit}      />
           </div>
@@ -390,16 +431,11 @@ export default function OrganisationPage() {
 
           <div className={styles.usageNote}>
             <span className={styles.usageNoteText}>
-              {org.seats.limit - org.seats.used} plads{org.seats.limit - org.seats.used !== 1 ? 'er' : ''} tilbage på din nuværende plan.
+              {((subInfo?.userCapacity ?? org.seats.limit) - (memberCount ?? org.seats.used))} plads{((subInfo?.userCapacity ?? org.seats.limit) - (memberCount ?? org.seats.used)) !== 1 ? 'er' : ''} tilbage på din nuværende plan.
             </span>
-            <a href="#" className={styles.usageNoteLink}>Invitér medlemmer →</a>
           </div>
 
           <div className={styles.planActions}>
-            <button className={styles.upgradeBtn}>
-              <IconUserPlus size={14} strokeWidth={2} />
-              Invitér medlem
-            </button>
             <button className={styles.manageBtn}>Se alle grænser</button>
           </div>
         </div>
@@ -407,10 +443,10 @@ export default function OrganisationPage() {
       </div>
 
       {/* ── Invite code ── */}
-      <InviteCode code={org.invitationCode} />
+      <InviteCode code={orgData?.invitationCode ?? org.invitationCode} />
 
       {/* ── Access requests ── */}
-      <AccessRequests />
+      {canManageRequests && <AccessRequests />}
 
       {/* ── Members ── */}
       <div className={styles.membersCard}>
@@ -419,10 +455,6 @@ export default function OrganisationPage() {
             <p className={styles.cardEyebrow}>Team</p>
             <h2 className={styles.cardTitle}>Medlemmer</h2>
           </div>
-          <button className={styles.upgradeBtn} style={{ fontSize: '13px', padding: '7px 14px' }}>
-            <IconUserPlus size={13} strokeWidth={2} />
-            Invitér
-          </button>
         </div>
 
         <div className={styles.memberTable}>
@@ -430,7 +462,7 @@ export default function OrganisationPage() {
             <span>Medlem</span>
             <span>Rolle</span>
             <span>Tilmeldt</span>
-            <span />
+            {canManageRequests && <span />}
           </div>
           {members.map((m) => (
             <div key={m.email} className={styles.memberRow}>
@@ -449,7 +481,7 @@ export default function OrganisationPage() {
                 {m.role}
               </div>
               <span className={styles.memberJoined}>{m.joined}</span>
-              <MemberMenu />
+              {canManageRequests && <MemberMenu />}
             </div>
           ))}
         </div>
