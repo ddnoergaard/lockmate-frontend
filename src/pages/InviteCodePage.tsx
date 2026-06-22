@@ -62,7 +62,7 @@ export default function InviteCodePage() {
     const token = localStorage.getItem('token') ?? ''
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/api/organisation/add-request`, {
+      const res = await fetch(`${API_BASE}/api/organisation/request-access`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
