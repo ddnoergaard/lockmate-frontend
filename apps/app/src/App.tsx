@@ -29,12 +29,25 @@ function ScrollToTop() {
   return null
 }
 
+function RootRedirect() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+      if (typeof payload.exp === 'number' && payload.exp * 1000 > Date.now()) {
+        return <Navigate to="/app/dashboard" replace />
+      }
+    }
+  } catch {}
+  return <Navigate to="/login" replace />
+}
+
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/"           element={<Navigate to="/login" replace />} />
+        <Route path="/"           element={<RootRedirect />} />
         <Route path="/login"      element={<PageTransition><AuthPage /></PageTransition>} />
         <Route path="/register"   element={<PageTransition><RegisterPage /></PageTransition>} />
         <Route path="/onboarding" element={<PageTransition><OnboardingPage /></PageTransition>} />
