@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { IconCheck, IconX, IconMinus, IconArrowNarrowRight } from '@tabler/icons-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { APP_URL } from '../config'
 import styles from './ComparisonPage.module.css'
 
 /* ── Competitor pricing ── */
@@ -80,7 +81,7 @@ export default function ComparisonPage() {
             Konkurrenter fakturerer pr. bruger – det virker billigt til at starte med. Men når teamet vokser, vokser regningen med. Lockmate har én flat takst. Uanset om I er 5 eller 50.
           </p>
           <div className={styles.heroCtas}>
-            <Link to="/register" className={styles.heroPrimary}>Start 30 dage gratis</Link>
+            <a href={`${APP_URL}/register`} className={styles.heroPrimary}>Start 30 dage gratis</a>
             <Link to="/pricing"  className={styles.heroSecondary}>Se prisplaner</Link>
           </div>
         </div>
@@ -242,9 +243,9 @@ export default function ComparisonPage() {
             <p className={styles.whyBody}>
               Konkurrenterne har imponerende feature-lister, men de fakturerer pr. hoved. Det betyder, at din regning vokser med hvert nyt teammedlem. Vores pris? Den er den samme, uanset om I er 16 eller 50.
             </p>
-            <Link to="/register" className={styles.whyCta}>
+            <a href={`${APP_URL}/register`} className={styles.whyCta}>
               Start gratis i dag <IconArrowNarrowRight size={15} strokeWidth={2} />
-            </Link>
+            </a>
           </div>
 
           <div className={styles.whyRight}>
@@ -267,7 +268,7 @@ export default function ComparisonPage() {
           <h2 className={styles.ctaTitle}>Klar til at prøve?</h2>
           <p className={styles.ctaSub}>30 dage gratis. Intet kreditkort. Annuller når som helst.</p>
           <div className={styles.ctaBtns}>
-            <Link to="/register" className={styles.ctaPrimary}>Opret gratis konto</Link>
+            <a href={`${APP_URL}/register`} className={styles.ctaPrimary}>Opret gratis konto</a>
             <Link to="/pricing"  className={styles.ctaSecondary}>Se alle prisplaner</Link>
           </div>
         </div>

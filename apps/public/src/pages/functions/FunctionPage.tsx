@@ -5,6 +5,7 @@ import { IconArrowNarrowRight, IconChevronDown } from '@tabler/icons-react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { functionsData } from './functionsData'
+import { APP_URL } from '../../config'
 import styles from './FunctionPage.module.css'
 
 function FaqItem({ q, a }: { q: string; a: string }) {
@@ -50,9 +51,9 @@ export default function FunctionPage() {
             <h1 className={styles.heading}>{fn.heading}</h1>
             <p className={styles.subheading}>{fn.subheading}</p>
             <div className={styles.heroCtas}>
-              <Link to="/register" className={styles.primaryBtn}>
+              <a href={`${APP_URL}/register`} className={styles.primaryBtn}>
                 Kom gratis i gang <IconArrowNarrowRight size={15} strokeWidth={2} />
-              </Link>
+              </a>
               <Link to="/pricing" className={styles.ghostBtn}>Se priser</Link>
             </div>
           </div>

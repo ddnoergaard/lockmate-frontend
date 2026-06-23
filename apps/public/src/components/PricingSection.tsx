@@ -1,5 +1,6 @@
 import { IconCheck, IconArrowNarrowRight } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
+import { APP_URL } from '../config'
 import styles from './PricingSection.module.css'
 
 const plans = [
@@ -89,9 +90,9 @@ export default function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <Link to={plan.ctaLink} className={`${styles.planBtn} ${plan.dark ? styles.planBtnDark : ''}`}>
+                <a href={`${APP_URL}${plan.ctaLink}`} className={`${styles.planBtn} ${plan.dark ? styles.planBtnDark : ''}`}>
                   {plan.cta}
-                </Link>
+                </a>
               </div>
             ))}
           </div>

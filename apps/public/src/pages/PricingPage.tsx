@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { IconCheck, IconChevronDown, IconArrowNarrowRight } from '@tabler/icons-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { APP_URL } from '../config'
 import styles from './PricingPage.module.css'
 
 /* ── Plans ── */
@@ -269,12 +270,12 @@ export default function PricingPage() {
               </div>
 
               <div className={styles.cardCtas}>
-                <Link
-                  to={plan.ctaLink}
+                <a
+                  href={`${APP_URL}${plan.ctaLink}`}
                   className={`${styles.primaryCta} ${plan.highlight ? styles.primaryCtaGreen : ''}`}
                 >
                   {plan.cta}
-                </Link>
+                </a>
                 <span className={styles.trialNote}>30 dage gratis · Intet kreditkort kræves</span>
               </div>
 
@@ -348,7 +349,7 @@ export default function PricingPage() {
               Priser der skalerer med <strong>dig</strong>, ikke imod <strong>dig</strong>.
             </p>
             <div className={styles.contractsCtas}>
-              <Link to="/register" className={styles.contractsPrimary}>Kom gratis i gang</Link>
+              <a href={`${APP_URL}/register`} className={styles.contractsPrimary}>Kom gratis i gang</a>
               <Link to="/pricing/comparison" className={styles.contractsSecondary}>Se prissammenligning</Link>
             </div>
           </div>

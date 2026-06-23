@@ -5,6 +5,7 @@ import { IconChevronDown, IconMenu2, IconX, IconSun, IconMoon } from '@tabler/ic
 import logoSrc from '../assets/logo.svg'
 import logoLightSrc from '../assets/logo-light.svg'
 import { useTheme } from '@lockmate/ui'
+import { APP_URL } from '../config'
 import styles from './Navbar.module.css'
 
 const pricingLinks = [
@@ -133,8 +134,8 @@ export default function Navbar() {
             <button className={styles.themeToggle} onClick={toggle} aria-label="Skift tema">
               {theme === 'dark' ? <IconSun size={16} strokeWidth={1.75} /> : <IconMoon size={16} strokeWidth={1.75} />}
             </button>
-            <Link to="/login" className={styles.loginBtn}>Log ind</Link>
-            <Link to="/register" className={styles.ctaBtn}>Kom i gang</Link>
+            <a href={`${APP_URL}/login`} className={styles.loginBtn}>Log ind</a>
+            <a href={`${APP_URL}/register`} className={styles.ctaBtn}>Kom i gang</a>
           </div>
 
           <button
@@ -181,8 +182,8 @@ export default function Navbar() {
                 <li><Link to="/contact" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Kontakt</Link></li>
               </ul>
               <div className={styles.mobileActions}>
-                <Link to="/login" className={styles.loginBtn} onClick={() => setMenuOpen(false)}>Log ind</Link>
-                <Link to="/register" className={styles.ctaBtn} onClick={() => setMenuOpen(false)}>Kom i gang</Link>
+                <a href={`${APP_URL}/login`} className={styles.loginBtn} onClick={() => setMenuOpen(false)}>Log ind</a>
+                <a href={`${APP_URL}/register`} className={styles.ctaBtn} onClick={() => setMenuOpen(false)}>Kom i gang</a>
               </div>
             </div>
           )}

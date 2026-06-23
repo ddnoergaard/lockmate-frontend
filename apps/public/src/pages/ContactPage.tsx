@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { API_BASE } from '../config'
+import { API_BASE, APP_URL } from '../config'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import {
@@ -263,10 +263,10 @@ export default function ContactPage() {
           </div>
 
           <div className={styles.cta}>
-            <Link to="/register" className={styles.ctaBtn}>
+            <a href={`${APP_URL}/register`} className={styles.ctaBtn}>
               Kom i gang gratis
               <IconArrowNarrowRight size={16} strokeWidth={2} />
-            </Link>
+            </a>
             <Link to="/pricing" className={styles.ctaSecondary}>Se priser</Link>
           </div>
         </div>
