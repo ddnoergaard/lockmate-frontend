@@ -1,2 +1,1 @@
-//export const API_BASE = 'https://api.lockmate.dk' //PROD ENV
-export const API_BASE = 'https://localhost:7014' //DEV ENV
+export const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://localhost:7014'
