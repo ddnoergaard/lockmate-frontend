@@ -6,7 +6,7 @@ import logoSrc from '../assets/logo.svg'
 import logoLightSrc from '../assets/logo-light.svg'
 import styles from './EarlyAccessPage.module.css'
 import { API_BASE } from '../config'
-import { useTheme } from '../context/ThemeContext'
+import { useTheme } from '@lockmate/ui'
 
 export default function EarlyAccessPage() {
   const { theme } = useTheme()

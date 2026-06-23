@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { IconChevronDown, IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
 import logoLightSrc from '../assets/logo-light.svg'
-import { useTheme } from '../context/ThemeContext'
+import { useTheme } from '@lockmate/ui'
 import styles from './Navbar.module.css'
 
 const pricingLinks = [
