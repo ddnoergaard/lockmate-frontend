@@ -1,0 +1,33 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 8px var(--space-sm);
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--accent-hover);
+}
+
+.secondary {
+  background: var(--surface-raised);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.secondary:hover {
+  background: var(--surface-high);
+}

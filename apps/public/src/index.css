@@ -1,17 +1,4 @@
-/* Phase 5: replace this block with @import "@lockmate/ui/tokens.css"; */
-:root {
-  --bg:      #161616;
-  --surface: #1E1E1E;
-  --text:    #EFEFED;
-  --accent:  #3D7035;
-}
-
-[data-theme="light"] {
-  --bg:      #F5F5F3;
-  --surface: #FFFFFF;
-  --text:    #1A1A18;
-  --accent:  #3D7035;
-}
+@import "@lockmate/ui/tokens.css";
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -20,13 +7,16 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
   background: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
 }
 
 #root {
   min-height: 100vh;
   padding: 2rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

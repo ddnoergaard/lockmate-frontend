@@ -1,4 +1,5 @@
 import { IconSettings } from '@tabler/icons-react'
+import { Button } from '@lockmate/ui'
 import styles from './PlaceholderPage.module.css'
 
 export default function SettingsPage() {
@@ -17,6 +18,7 @@ export default function SettingsPage() {
         </div>
         <p className={styles.emptyTitle}>Settings coming soon</p>
         <p className={styles.emptyDesc}>Account, security, and notification settings will live here.</p>
+        <Button variant="secondary" style={{ marginTop: '1rem' }}>@lockmate/ui Button</Button>
       </div>
     </div>
   )
