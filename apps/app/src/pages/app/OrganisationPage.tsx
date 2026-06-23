@@ -73,7 +73,13 @@ const planFeatures: Record<string, string[]> = {
 
 const initialRequests: { name: string; email: string; requestedAt: string }[] = []
 
-const members: { name: string; email: string; role: string; joined: string }[] = []
+interface Member {
+  userId: number
+  name:   string
+  email:  string
+  role:   string
+  joined: string
+}
 
 function initials(name: string) {
   return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
@@ -192,9 +198,11 @@ function InviteCode({ code }: { code: string }) {
   )
 }
 
-function MemberMenu() {
+function MemberMenu({ isSelf }: { isSelf: boolean }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+
+  if (isSelf) return null
 
   useEffect(() => {
     if (!open) return
@@ -256,10 +264,24 @@ function formatDate(iso: string) {
 export default function OrganisationPage() {
   const { credentialCount, vaultCount, memberCount, orgId } = useOrgStats()
   const hasOrg = !!orgId
-  const role = getTokenPayload().role
+  const payload = getTokenPayload()
+  const role = payload.role
+  const currentUserId = payload.userId ? Number(payload.userId) : null
   const canManageRequests = role === 'Admin' || role === 'Owner'
   const [orgData, setOrgData] = useState<OrgData | null>(null)
   const [subInfo, setSubInfo] = useState<SubInfo | null>(null)
+  const [members, setMembers] = useState<Member[]>([])
+
+  useEffect(() => {
+    if (!hasOrg) return
+    const token = localStorage.getItem('token') ?? ''
+    fetch(`${API_BASE}/api/organisation/get-org-members-for-table`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : [])
+      .then((data: Member[]) => setMembers(data))
+      .catch(() => {})
+  }, [hasOrg])
 
   useEffect(() => {
     if (!hasOrg) return
@@ -480,8 +502,8 @@ export default function OrganisationPage() {
                 }
                 {m.role}
               </div>
-              <span className={styles.memberJoined}>{m.joined}</span>
-              {canManageRequests && <MemberMenu />}
+              <span className={styles.memberJoined}>{formatDate(m.joined)}</span>
+              {canManageRequests && <MemberMenu isSelf={m.userId === currentUserId} />}
             </div>
           ))}
         </div>
