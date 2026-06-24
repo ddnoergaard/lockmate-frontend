@@ -554,7 +554,17 @@
   border-bottom: 1px solid var(--border);
 }
 
-.requestRow:last-child {
+.requestRowReadOnly {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  align-items: center;
+  padding: 0 12px;
+  height: 54px;
+  border-bottom: 1px solid var(--border);
+}
+
+.requestRow:last-child,
+.requestRowReadOnly:last-child {
   border-bottom: none;
 }
 

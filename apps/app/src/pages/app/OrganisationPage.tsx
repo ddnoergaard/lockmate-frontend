@@ -71,7 +71,12 @@ const planFeatures: Record<string, string[]> = {
   ],
 }
 
-const initialRequests: { name: string; email: string; requestedAt: string }[] = []
+interface AccessRequest {
+  id:          number
+  fullname:    string
+  email:       string
+  requestedAt: string
+}
 
 interface Member {
   id:        number
@@ -110,15 +115,78 @@ function UsageBar({ used, limit, label, unit = '' }: { used: number; limit: numb
   )
 }
 
-function AccessRequests() {
-  const [requests, setRequests] = useState(initialRequests)
+function ConfirmApproveModal({ request, onConfirm, onCancel }: { request: AccessRequest; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className={styles.modalOverlay} onClick={onCancel}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalIcon} style={{ background: 'var(--accent-subtle)', borderColor: 'var(--accent-border)', color: 'var(--accent-light)' }}>
+          <IconCheck size={20} strokeWidth={2} />
+        </div>
+        <h2 className={styles.modalTitle}>Godkend {request.fullname}?</h2>
+        <p className={styles.modalDesc}>
+          {request.fullname} får adgang til organisationen og dens vaults.
+        </p>
+        <div className={styles.modalActions}>
+          <button className={styles.modalCancelBtn} onClick={onCancel}>Annuller</button>
+          <button className={styles.modalConfirmBtn} style={{ background: 'var(--accent)' }} onClick={onConfirm}>
+            <IconCheck size={14} strokeWidth={2.5} />
+            Godkend
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-  function approve(email: string) {
-    setRequests(r => r.filter(x => x.email !== email))
-  }
+function ConfirmDenyModal({ request, onConfirm, onCancel }: { request: AccessRequest; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className={styles.modalOverlay} onClick={onCancel}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalIcon}>
+          <IconX size={20} strokeWidth={2} />
+        </div>
+        <h2 className={styles.modalTitle}>Afvis {request.fullname}?</h2>
+        <p className={styles.modalDesc}>
+          {request.fullname} vil ikke få adgang til organisationen.
+        </p>
+        <div className={styles.modalActions}>
+          <button className={styles.modalCancelBtn} onClick={onCancel}>Annuller</button>
+          <button className={styles.modalConfirmBtn} onClick={onConfirm}>
+            <IconX size={14} strokeWidth={2} />
+            Afvis
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-  function deny(email: string) {
-    setRequests(r => r.filter(x => x.email !== email))
+function AccessRequests({ canManage }: { canManage: boolean }) {
+  const [requests, setRequests] = useState<AccessRequest[]>([])
+  const [loading, setLoading] = useState(true)
+  const [pendingApprove, setPendingApprove] = useState<AccessRequest | null>(null)
+  const [pendingDeny, setPendingDeny] = useState<AccessRequest | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') ?? ''
+    fetch(`${API_BASE}/api/organisation/get-user-access-request`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : [])
+      .then((data: AccessRequest[]) => setRequests(data))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  function handleRequest(userId: number, grantedAccess: boolean) {
+    const token = localStorage.getItem('token') ?? ''
+    fetch(`${API_BASE}/api/organisation/handle-access-request`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, grantedAccess }),
+    })
+      .then(r => { if (r.ok) setRequests(prev => prev.filter(r => r.id !== userId)) })
+      .catch(() => {})
   }
 
   return (
@@ -131,38 +199,60 @@ function AccessRequests() {
         {requests.length > 0 && <span className={styles.requestsBadge}>{requests.length}</span>}
       </div>
 
-      {requests.length === 0 ? (
+      {loading ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Skel h={13} />
+          <Skel w="60%" h={13} />
+        </div>
+      ) : requests.length === 0 ? (
         <p className={styles.emptyTableText}>Ingen nye anmodninger</p>
       ) : (
-      <div className={styles.memberTable}>
-        <div className={styles.requestTableHead}>
-          <span>Anmoder</span>
-          <span>Anmodet</span>
-          <span />
-        </div>
-        {requests.map((r) => (
-          <div key={r.email} className={styles.requestRow}>
-            <div className={styles.memberInfo}>
-              <div className={styles.memberAvatar}>{initials(r.name)}</div>
-              <div className={styles.memberMeta}>
-                <span className={styles.memberName}>{r.name}</span>
-                <span className={styles.memberEmail}>{r.email}</span>
-              </div>
-            </div>
-            <span className={styles.requestedAt}>{r.requestedAt}</span>
-            <div className={styles.requestActions}>
-              <button className={styles.approveBtn} onClick={() => approve(r.email)}>
-                <IconCheck size={13} strokeWidth={2.5} />
-                Godkend
-              </button>
-              <button className={styles.denyBtn} onClick={() => deny(r.email)}>
-                <IconX size={13} strokeWidth={2.5} />
-                Afvis
-              </button>
-            </div>
+        <div className={styles.memberTable}>
+          <div className={styles.requestTableHead}>
+            <span>Anmoder</span>
+            <span>Anmodet</span>
+            {canManage && <span />}
           </div>
-        ))}
-      </div>
+          {requests.map(r => (
+            <div key={r.id} className={canManage ? styles.requestRow : styles.requestRowReadOnly}>
+              <div className={styles.memberInfo}>
+                <div className={styles.memberAvatar}>{initials(r.fullname)}</div>
+                <div className={styles.memberMeta}>
+                  <span className={styles.memberName}>{r.fullname}</span>
+                  <span className={styles.memberEmail}>{r.email}</span>
+                </div>
+              </div>
+              <span className={styles.requestedAt}>{formatDate(r.requestedAt)}</span>
+              {canManage && (
+                <div className={styles.requestActions}>
+                  <button className={styles.approveBtn} onClick={() => setPendingApprove(r)}>
+                    <IconCheck size={13} strokeWidth={2.5} />
+                    Godkend
+                  </button>
+                  <button className={styles.denyBtn} onClick={() => setPendingDeny(r)}>
+                    <IconX size={13} strokeWidth={2.5} />
+                    Afvis
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {pendingApprove && (
+        <ConfirmApproveModal
+          request={pendingApprove}
+          onConfirm={() => { handleRequest(pendingApprove.id, true); setPendingApprove(null) }}
+          onCancel={() => setPendingApprove(null)}
+        />
+      )}
+      {pendingDeny && (
+        <ConfirmDenyModal
+          request={pendingDeny}
+          onConfirm={() => { handleRequest(pendingDeny.id, false); setPendingDeny(null) }}
+          onCancel={() => setPendingDeny(null)}
+        />
       )}
     </div>
   )
@@ -722,7 +812,7 @@ export default function OrganisationPage() {
       {/* ── Invite code + Access requests ── */}
       <div className={styles.bottomRow}>
         <InviteCode code={orgData?.invitationCode ?? org.invitationCode} />
-        {canManageRequests && <AccessRequests />}
+        <AccessRequests canManage={canManageRequests} />
       </div>
 
       {/* ── Transfer ownership ── */}
