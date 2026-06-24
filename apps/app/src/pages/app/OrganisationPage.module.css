@@ -1010,12 +1010,9 @@
 
 /* ── Invite + requests row ── */
 .bottomRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
-}
-
-.bottomRow > * {
-  flex: 1;
 }
 
 /* ── Transfer ownership ── */
@@ -1094,7 +1091,7 @@
   .page { padding: 28px 24px 60px; }
   .statsRow { grid-template-columns: repeat(3, 1fr); }
   .bottomGrid { grid-template-columns: 1fr; }
-  .bottomRow { flex-direction: column; }
+  .bottomRow { grid-template-columns: 1fr; }
   .orgCard { flex-wrap: wrap; }
   .orgMetas { grid-template-columns: 1fr; }
 }
