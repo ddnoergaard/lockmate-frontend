@@ -9,7 +9,6 @@ import {
   IconArrowRight,
   IconCheck,
   IconRefresh,
-  IconCrown,
   IconUser,
   IconDotsVertical,
   IconPencil,
@@ -19,6 +18,7 @@ import {
   IconReceiptTax,
   IconCopy,
   IconX,
+  IconArrowsExchange,
 } from '@tabler/icons-react'
 import styles from './OrganisationPage.module.css'
 import { Link } from 'react-router-dom'
@@ -74,14 +74,15 @@ const planFeatures: Record<string, string[]> = {
 const initialRequests: { name: string; email: string; requestedAt: string }[] = []
 
 interface Member {
-  userId: number
-  name:   string
-  email:  string
-  role:   string
-  joined: string
+  id:        number
+  fullname:  string | null
+  email:     string
+  role:      string
+  createdAt: string
 }
 
-function initials(name: string) {
+function initials(name: string | null | undefined) {
+  if (!name) return '?'
   return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 }
 
@@ -198,7 +199,7 @@ function InviteCode({ code }: { code: string }) {
   )
 }
 
-function MemberMenu({ isSelf }: { isSelf: boolean }) {
+function MemberMenu({ isSelf, role, onRemove, onChangeRole }: { isSelf: boolean; role: string; onRemove: () => void; onChangeRole: () => void }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -226,17 +227,66 @@ function MemberMenu({ isSelf }: { isSelf: boolean }) {
       </button>
       {open && (
         <div className={styles.memberDropdown}>
-          <button className={styles.memberDropdownItem} onClick={() => setOpen(false)}>
+          <button className={styles.memberDropdownItem} onClick={() => { setOpen(false); onChangeRole() }}>
             <IconPencil size={13} strokeWidth={1.75} />
-            Rediger rolle
+            {role === 'Admin' ? 'Gør til Medlem' : 'Gør til Admin'}
           </button>
           <div className={styles.memberDropdownDivider} />
-          <button className={`${styles.memberDropdownItem} ${styles.memberDropdownItemDanger}`} onClick={() => setOpen(false)}>
+          <button
+            className={`${styles.memberDropdownItem} ${styles.memberDropdownItemDanger}`}
+            onClick={() => { setOpen(false); onRemove() }}
+          >
             <IconUserX size={13} strokeWidth={1.75} />
             Fjern medlem
           </button>
         </div>
       )}
+    </div>
+  )
+}
+
+function ConfirmRemoveModal({ member, onConfirm, onCancel }: { member: Member; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className={styles.modalOverlay} onClick={onCancel}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalIcon}>
+          <IconUserX size={20} strokeWidth={1.75} />
+        </div>
+        <h2 className={styles.modalTitle}>Fjern {member.fullname ?? member.email} fra organisationen?</h2>
+        <p className={styles.modalDesc}>
+          {member.fullname ?? member.email} vil miste adgang til alle vaults og loginoplysninger i organisationen. Denne handling kan ikke fortrydes.
+        </p>
+        <div className={styles.modalActions}>
+          <button className={styles.modalCancelBtn} onClick={onCancel}>Annuller</button>
+          <button className={styles.modalConfirmBtn} onClick={onConfirm}>
+            <IconUserX size={14} strokeWidth={2} />
+            Fjern medlem
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ConfirmRoleModal({ member, onConfirm, onCancel }: { member: Member; onConfirm: () => void; onCancel: () => void }) {
+  const newRole = member.role === 'Admin' ? 'Medlem' : 'Admin'
+  return (
+    <div className={styles.modalOverlay} onClick={onCancel}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalIcon} style={{ background: 'var(--accent-subtle)', borderColor: 'var(--accent-border)', color: 'var(--accent-light)' }}>
+          <IconPencil size={20} strokeWidth={1.75} />
+        </div>
+        <h2 className={styles.modalTitle}>Gør {member.fullname ?? member.email} til {newRole}?</h2>
+        <p className={styles.modalDesc}>
+          Dette ændrer {member.fullname ?? member.email}s adgangsniveau i organisationen.
+        </p>
+        <div className={styles.modalActions}>
+          <button className={styles.modalCancelBtn} onClick={onCancel}>Annuller</button>
+          <button className={styles.modalConfirmBtn} style={{ background: 'var(--accent)' }} onClick={onConfirm}>
+            Bekræft
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -257,8 +307,157 @@ interface SubInfo {
   userCapacity: number
 }
 
+function Skel({ w, h = 14, r = 5 }: { w?: number | string; h?: number; r?: number }) {
+  return <div className={styles.skel} style={{ width: w, height: h, borderRadius: r }} />
+}
+
+function PageSkeleton() {
+  return (
+    <div className={styles.page}>
+      <div className={styles.pageHeader}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Skel w={160} h={24} r={6} />
+          <Skel w={280} h={14} />
+        </div>
+      </div>
+
+      <div className={styles.orgCard}>
+        <div className={styles.orgCardTop}>
+          <Skel w={44} h={44} r={10} />
+          <Skel w={150} h={16} />
+        </div>
+        <div className={styles.orgMetas}>
+          {[140, 160, 120, 150].map((w, i) => <Skel key={i} w={w} h={13} />)}
+        </div>
+      </div>
+
+      <div className={styles.statsRow}>
+        {[0, 1, 2].map(i => (
+          <div key={i} className={styles.statCard}>
+            <Skel w={30} h={30} r={8} />
+            <Skel w={50} h={28} r={6} />
+            <Skel w={90} h={12} />
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.bottomGrid}>
+        <div className={styles.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <Skel w={70} h={11} />
+              <Skel w={120} h={14} />
+            </div>
+            <Skel w={60} h={22} r={6} />
+          </div>
+          <Skel w={110} h={36} r={6} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[0, 1, 2, 3].map(i => <Skel key={i} h={13} />)}
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <Skel w={120} h={34} r={8} />
+            <Skel w={160} h={34} r={8} />
+          </div>
+        </div>
+        <div className={styles.card}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <Skel w={70} h={11} />
+            <Skel w={100} h={14} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Skel w={60} h={13} /><Skel w={50} h={13} />
+            </div>
+            <Skel h={5} r={3} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <Skel h={13} /><Skel h={13} />
+          </div>
+          <Skel h={40} r={8} />
+        </div>
+      </div>
+
+      <div className={styles.membersCard}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <Skel w={50} h={11} />
+          <Skel w={100} h={14} />
+        </div>
+        <div className={styles.memberTable}>
+          {[0, 1, 2].map(i => (
+            <div key={i} className={styles.memberRow}>
+              <div className={styles.memberInfo}>
+                <Skel w={32} h={32} r={8} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  <Skel w={130} h={13} />
+                  <Skel w={170} h={11} />
+                </div>
+              </div>
+              <Skel w={60} h={13} />
+              <Skel w={90} h={13} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.bottomRow}>
+        <div className={styles.inviteCard}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <Skel w={50} h={11} />
+            <Skel w={120} h={14} />
+            <Skel w={240} h={12} />
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+            <Skel w={160} h={36} r={8} />
+            <Skel w={80} h={36} r={8} />
+          </div>
+        </div>
+        <div className={styles.requestsCard}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <Skel w={60} h={11} />
+            <Skel w={160} h={14} />
+          </div>
+          <Skel w={160} h={13} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+function TransferOwnership({ members, currentUserId }: { members: Member[]; currentUserId: number | null }) {
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const eligible = members.filter(m => m.id !== currentUserId)
+
+  return (
+    <div className={styles.transferCard}>
+      <div>
+        <p className={styles.cardEyebrow}>Ejerskab</p>
+        <h2 className={styles.cardTitle}>Overfør ejerskab</h2>
+      </div>
+      <p className={styles.transferDesc}>
+        Overdrag ejerskabet af organisationen til et andet medlem. Du mister adgang til denne sektion og kan ikke fortryde handlingen.
+      </p>
+      <div className={styles.transferRow}>
+        <select
+          className={styles.transferSelect}
+          value={selectedId ?? ''}
+          onChange={e => setSelectedId(Number(e.target.value) || null)}
+        >
+          <option value="">Vælg nyt ejer...</option>
+          {eligible.map(m => (
+            <option key={m.id} value={m.id}>{m.fullname ?? m.email}</option>
+          ))}
+        </select>
+        <button className={styles.transferBtn} disabled={!selectedId}>
+          <IconArrowsExchange size={14} strokeWidth={2} />
+          Overfør ejerskab
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default function OrganisationPage() {
@@ -271,22 +470,21 @@ export default function OrganisationPage() {
   const [orgData, setOrgData] = useState<OrgData | null>(null)
   const [subInfo, setSubInfo] = useState<SubInfo | null>(null)
   const [members, setMembers] = useState<Member[]>([])
+  const [loading, setLoading] = useState(true)
+  const [pendingRemove, setPendingRemove] = useState<Member | null>(null)
+  const [pendingRoleChange, setPendingRoleChange] = useState<Member | null>(null)
 
   useEffect(() => {
-    if (!hasOrg) return
+    if (!hasOrg) { setLoading(false); return }
     const token = localStorage.getItem('token') ?? ''
-    fetch(`${API_BASE}/api/organisation/get-org-members-for-table`, {
+
+    const membersPromise = fetch(`${API_BASE}/api/organisation/get-org-members-for-table`, {
       headers: { 'Authorization': `Bearer ${token}` },
     })
       .then(r => r.ok ? r.json() : [])
       .then((data: Member[]) => setMembers(data))
-      .catch(() => {})
-  }, [hasOrg])
 
-  useEffect(() => {
-    if (!hasOrg) return
-    const token = localStorage.getItem('token') ?? ''
-    fetch(`${API_BASE}/api/organisation/current-org-data`, {
+    const orgPromise = fetch(`${API_BASE}/api/organisation/current-org-data`, {
       headers: { 'Authorization': `Bearer ${token}` },
     })
       .then(r => r.ok ? r.json() : null)
@@ -299,8 +497,13 @@ export default function OrganisationPage() {
       })
       .then(r => r && r.ok ? r.json() : null)
       .then((data: SubInfo | null) => { if (data) setSubInfo(data) })
+
+    Promise.all([membersPromise, orgPromise])
       .catch(() => {})
+      .finally(() => setLoading(false))
   }, [hasOrg])
+
+  if (loading) return <PageSkeleton />
 
   if (!hasOrg) {
     return (
@@ -439,9 +642,17 @@ export default function OrganisationPage() {
           </div>
 
           <div className={styles.usageList}>
-            <UsageBar label="Pladser"          used={memberCount ?? org.seats.used} limit={subInfo?.userCapacity ?? org.seats.limit} />
-            <UsageBar label="Loginoplysninger" used={org.credentials.used} limit={org.credentials.limit} />
-            <UsageBar label="Vaults"           used={org.vaults.used}      limit={org.vaults.limit}      />
+            <UsageBar label="Pladser" used={memberCount ?? org.seats.used} limit={subInfo?.userCapacity ?? org.seats.limit} />
+          </div>
+          <div className={styles.unlimitedList}>
+            <div className={styles.unlimitedItem}>
+              <IconCheck size={13} strokeWidth={2.5} className={styles.planCheck} />
+              Ubegrænsede loginoplysninger
+            </div>
+            <div className={styles.unlimitedItem}>
+              <IconCheck size={13} strokeWidth={2.5} className={styles.planCheck} />
+              Ubegrænsede vaults
+            </div>
           </div>
 
           <div className={styles.usageCycle}>
@@ -451,11 +662,16 @@ export default function OrganisationPage() {
             </div>
           </div>
 
-          <div className={styles.usageNote}>
-            <span className={styles.usageNoteText}>
-              {((subInfo?.userCapacity ?? org.seats.limit) - (memberCount ?? org.seats.used))} plads{((subInfo?.userCapacity ?? org.seats.limit) - (memberCount ?? org.seats.used)) !== 1 ? 'er' : ''} tilbage på din nuværende plan.
-            </span>
-          </div>
+          {(() => {
+            const remaining = (subInfo?.userCapacity ?? org.seats.limit) - (memberCount ?? org.seats.used)
+            return (
+              <div className={styles.usageNote}>
+                <span className={styles.usageNoteText}>
+                  {remaining} plads{remaining !== 1 ? 'er' : ''} tilbage på din nuværende plan.
+                </span>
+              </div>
+            )
+          })()}
 
           <div className={styles.planActions}>
             <button className={styles.manageBtn}>Se alle grænser</button>
@@ -463,12 +679,6 @@ export default function OrganisationPage() {
         </div>
 
       </div>
-
-      {/* ── Invite code ── */}
-      <InviteCode code={orgData?.invitationCode ?? org.invitationCode} />
-
-      {/* ── Access requests ── */}
-      {canManageRequests && <AccessRequests />}
 
       {/* ── Members ── */}
       <div className={styles.membersCard}>
@@ -486,28 +696,75 @@ export default function OrganisationPage() {
             <span>Tilmeldt</span>
             {canManageRequests && <span />}
           </div>
-          {members.map((m) => (
+          {[...members].sort((a, b) => {
+              const order: Record<string, number> = { Owner: 0, Admin: 1 }
+              return (order[a.role] ?? 2) - (order[b.role] ?? 2)
+            }).map((m) => (
             <div key={m.email} className={styles.memberRow}>
               <div className={styles.memberInfo}>
-                <div className={styles.memberAvatar}>{initials(m.name)}</div>
+                <div className={styles.memberAvatar}>{initials(m.fullname)}</div>
                 <div className={styles.memberMeta}>
-                  <span className={styles.memberName}>{m.name}</span>
+                  <span className={styles.memberName}>{m.fullname}</span>
                   <span className={styles.memberEmail}>{m.email}</span>
                 </div>
               </div>
-              <div className={`${styles.memberRole} ${m.role === 'Admin' ? styles.memberRoleAdmin : ''}`}>
-                {m.role === 'Admin'
-                  ? <IconCrown size={11} strokeWidth={2} />
-                  : <IconUser  size={11} strokeWidth={1.75} />
-                }
+              <div className={styles.memberRole}>
+                <IconUser size={11} strokeWidth={1.75} />
                 {m.role}
               </div>
-              <span className={styles.memberJoined}>{formatDate(m.joined)}</span>
-              {canManageRequests && <MemberMenu isSelf={m.userId === currentUserId} />}
+              <span className={styles.memberJoined}>{formatDate(m.createdAt)}</span>
+              {canManageRequests && <MemberMenu isSelf={m.id === currentUserId} role={m.role} onRemove={() => setPendingRemove(m)} onChangeRole={() => setPendingRoleChange(m)} />}
             </div>
           ))}
         </div>
       </div>
+
+      {/* ── Invite code + Access requests ── */}
+      <div className={styles.bottomRow}>
+        <InviteCode code={orgData?.invitationCode ?? org.invitationCode} />
+        {canManageRequests && <AccessRequests />}
+      </div>
+
+      {/* ── Transfer ownership ── */}
+      {role === 'Owner' && <TransferOwnership members={members} currentUserId={currentUserId} />}
+
+      {/* ── Role change confirmation ── */}
+      {pendingRoleChange && (
+        <ConfirmRoleModal
+          member={pendingRoleChange}
+          onConfirm={() => {
+            const newRole = pendingRoleChange.role === 'Admin' ? 'Member' : 'Admin'
+            const token = localStorage.getItem('token') ?? ''
+            fetch(`${API_BASE}/api/organisation/update-user-role`, {
+              method: 'PUT',
+              headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId: pendingRoleChange.id, userRole: newRole }),
+            })
+              .then(r => { if (r.ok) setMembers(prev => prev.map(m => m.id === pendingRoleChange.id ? { ...m, role: newRole } : m)) })
+              .catch(() => {})
+            setPendingRoleChange(null)
+          }}
+          onCancel={() => setPendingRoleChange(null)}
+        />
+      )}
+
+      {/* ── Remove member confirmation ── */}
+      {pendingRemove && (
+        <ConfirmRemoveModal
+          member={pendingRemove}
+          onConfirm={() => {
+            const token = localStorage.getItem('token') ?? ''
+            fetch(`${API_BASE}/api/organisation/revoke-access?userId=${pendingRemove.id}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${token}` },
+            })
+              .then(r => { if (r.ok) setMembers(prev => prev.filter(m => m.id !== pendingRemove.id)) })
+              .catch(() => {})
+            setPendingRemove(null)
+          }}
+          onCancel={() => setPendingRemove(null)}
+        />
+      )}
 
     </div>
   )
