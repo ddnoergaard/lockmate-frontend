@@ -608,7 +608,7 @@ export default function OrganisationPage() {
           <IconBuilding size={32} strokeWidth={1.25} className={styles.emptyIcon} />
           <h2 className={styles.emptyTitle}>Ingen organisation endnu</h2>
           <p className={styles.emptyDesc}>
-            Du er ikke tilknyttet nogen organisation. Opret en ny eller tilslut dig en eksisterende for at komme i gang.
+            Du er ikke tilknyttet nogen organisation. Opret en ny eller tilslut dig en eksisterende for at komme i gang
           </p>
           <Link to="/app/organisation/setup" className={styles.emptyBtn}>
             Opret organisation
