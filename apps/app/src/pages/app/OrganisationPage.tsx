@@ -19,6 +19,7 @@ import {
   IconCopy,
   IconX,
   IconArrowsExchange,
+  IconSearch,
 } from '@tabler/icons-react'
 import styles from './OrganisationPage.module.css'
 import { Link } from 'react-router-dom'
@@ -563,6 +564,22 @@ export default function OrganisationPage() {
   const [loading, setLoading] = useState(true)
   const [pendingRemove, setPendingRemove] = useState<Member | null>(null)
   const [pendingRoleChange, setPendingRoleChange] = useState<Member | null>(null)
+  const [memberSearch, setMemberSearch] = useState('')
+  const [memberRoleFilter, setMemberRoleFilter] = useState('')
+
+  const filteredMembers = [...members]
+    .sort((a, b) => {
+      const order: Record<string, number> = { Owner: 0, Admin: 1 }
+      return (order[a.role] ?? 2) - (order[b.role] ?? 2)
+    })
+    .filter(m => {
+      const q = memberSearch.toLowerCase()
+      const matchesSearch = !q ||
+        (m.fullname?.toLowerCase().includes(q) ?? false) ||
+        m.email.toLowerCase().includes(q)
+      const matchesRole = !memberRoleFilter || m.role === memberRoleFilter
+      return matchesSearch && matchesRole
+    })
 
   useEffect(() => {
     if (!hasOrg) { setLoading(false); return }
@@ -779,6 +796,28 @@ export default function OrganisationPage() {
           </div>
         </div>
 
+        <div className={styles.memberControls}>
+          <div className={styles.memberSearchWrap}>
+            <IconSearch size={13} strokeWidth={1.75} className={styles.memberSearchIcon} />
+            <input
+              className={styles.memberSearchInput}
+              placeholder="Søg på navn eller e-mail..."
+              value={memberSearch}
+              onChange={e => setMemberSearch(e.target.value)}
+            />
+          </div>
+          <select
+            className={styles.memberRoleSelect}
+            value={memberRoleFilter}
+            onChange={e => setMemberRoleFilter(e.target.value)}
+          >
+            <option value="">Alle roller</option>
+            <option value="Owner">Owner</option>
+            <option value="Admin">Admin</option>
+            <option value="Member">Member</option>
+          </select>
+        </div>
+
         <div className={styles.memberTable}>
           <div className={styles.memberTableHead}>
             <span>Medlem</span>
@@ -786,26 +825,29 @@ export default function OrganisationPage() {
             <span>Tilmeldt</span>
             {canManageRequests && <span />}
           </div>
-          {[...members].sort((a, b) => {
-              const order: Record<string, number> = { Owner: 0, Admin: 1 }
-              return (order[a.role] ?? 2) - (order[b.role] ?? 2)
-            }).map((m) => (
-            <div key={m.email} className={styles.memberRow}>
-              <div className={styles.memberInfo}>
-                <div className={styles.memberAvatar}>{initials(m.fullname)}</div>
-                <div className={styles.memberMeta}>
-                  <span className={styles.memberName}>{m.fullname}</span>
-                  <span className={styles.memberEmail}>{m.email}</span>
+          <div className={styles.memberRowsScroll}>
+            {filteredMembers.length === 0 ? (
+              <p className={styles.emptyTableText} style={{ padding: '16px 12px' }}>
+                {members.length === 0 ? 'Ingen medlemmer endnu' : 'Ingen resultater'}
+              </p>
+            ) : filteredMembers.map((m) => (
+              <div key={m.email} className={styles.memberRow}>
+                <div className={styles.memberInfo}>
+                  <div className={styles.memberAvatar}>{initials(m.fullname)}</div>
+                  <div className={styles.memberMeta}>
+                    <span className={styles.memberName}>{m.fullname}</span>
+                    <span className={styles.memberEmail}>{m.email}</span>
+                  </div>
                 </div>
+                <div className={styles.memberRole}>
+                  <IconUser size={11} strokeWidth={1.75} />
+                  {m.role}
+                </div>
+                <span className={styles.memberJoined}>{formatDate(m.createdAt)}</span>
+                {canManageRequests && <MemberMenu isSelf={m.id === currentUserId} role={m.role} onRemove={() => setPendingRemove(m)} onChangeRole={() => setPendingRoleChange(m)} />}
               </div>
-              <div className={styles.memberRole}>
-                <IconUser size={11} strokeWidth={1.75} />
-                {m.role}
-              </div>
-              <span className={styles.memberJoined}>{formatDate(m.createdAt)}</span>
-              {canManageRequests && <MemberMenu isSelf={m.id === currentUserId} role={m.role} onRemove={() => setPendingRemove(m)} onChangeRole={() => setPendingRoleChange(m)} />}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 

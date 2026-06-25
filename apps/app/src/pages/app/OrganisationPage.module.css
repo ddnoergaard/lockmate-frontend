@@ -749,10 +749,6 @@
   position: relative;
 }
 
-.memberRow:last-child {
-  border-bottom: none;
-}
-
 .memberRow:hover {
   background: var(--surface-raised);
 }
@@ -812,6 +808,93 @@
 .memberJoined {
   font-size: 12.5px;
   color: var(--text-muted);
+}
+
+/* ── Member controls ── */
+.memberControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.memberSearchWrap {
+  position: relative;
+  flex: 1;
+}
+
+.memberSearchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.memberSearchInput {
+  width: 100%;
+  padding: 7px 12px 7px 30px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.memberSearchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.memberSearchInput:focus {
+  border-color: var(--accent);
+}
+
+.memberRoleSelect {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition: border-color 0.15s;
+}
+
+.memberRoleSelect:focus {
+  border-color: var(--accent);
+}
+
+/* ── Member rows scroll ── */
+.memberRowsScroll {
+  max-height: calc(10 * 54px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.memberRowsScroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.memberRowsScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.memberRowsScroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 2px;
+}
+
+.memberRowsScroll > .memberRow:last-child {
+  border-bottom: none;
 }
 
 /* ── Member context menu ── */
