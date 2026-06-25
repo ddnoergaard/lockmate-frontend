@@ -259,13 +259,24 @@ function AccessRequests({ canManage }: { canManage: boolean }) {
   )
 }
 
-function InviteCode({ code }: { code: string }) {
+function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () => Promise<void> }) {
   const [copied, setCopied] = useState(false)
+  const [regenerating, setRegenerating] = useState(false)
+  const [cooldown, setCooldown] = useState(false)
 
   function copy() {
     navigator.clipboard.writeText(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  async function regen() {
+    if (!onRegenerate || regenerating || cooldown) return
+    setRegenerating(true)
+    await onRegenerate()
+    setRegenerating(false)
+    setCooldown(true)
+    setTimeout(() => setCooldown(false), 1000)
   }
 
   return (
@@ -279,12 +290,18 @@ function InviteCode({ code }: { code: string }) {
         <div className={styles.inviteCodeBox}>
           <span className={styles.inviteCode}>{code}</span>
         </div>
-        <button className={styles.inviteCopyBtn} onClick={copy}>
+        <button className={styles.inviteCopyBtn} onClick={copy} disabled={regenerating}>
           {copied
             ? <><IconCheck size={14} strokeWidth={2.5} /> Kopieret</>
             : <><IconCopy size={14} strokeWidth={1.75} /> Kopiér</>
           }
         </button>
+        {onRegenerate && (
+          <button className={styles.inviteRegenBtn} onClick={regen} disabled={regenerating || cooldown}>
+            <IconRefresh size={14} strokeWidth={1.75} className={regenerating ? styles.spinning : undefined} />
+            {regenerating ? 'Genererer...' : 'Ny kode'}
+          </button>
+        )}
       </div>
     </div>
   )
@@ -566,6 +583,19 @@ export default function OrganisationPage() {
   const [pendingRoleChange, setPendingRoleChange] = useState<Member | null>(null)
   const [memberSearch, setMemberSearch] = useState('')
   const [memberRoleFilter, setMemberRoleFilter] = useState('')
+
+  async function handleRegenerate() {
+    const token = localStorage.getItem('token') ?? ''
+    const res = await fetch(`${API_BASE}/api/organisation/update-invitecode`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+    if (!res.ok) return
+    const data: OrgData | null = await fetch(`${API_BASE}/api/organisation/current-org-data`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    }).then(r => r.ok ? r.json() : null)
+    if (data) setOrgData(data)
+  }
 
   const filteredMembers = [...members]
     .sort((a, b) => {
@@ -853,7 +883,7 @@ export default function OrganisationPage() {
 
       {/* ── Invite code + Access requests ── */}
       <div className={styles.bottomRow}>
-        <InviteCode code={orgData?.invitationCode ?? org.invitationCode} />
+        <InviteCode code={orgData?.invitationCode ?? org.invitationCode} onRegenerate={canManageRequests ? handleRegenerate : undefined} />
         <AccessRequests canManage={canManageRequests} />
       </div>
 

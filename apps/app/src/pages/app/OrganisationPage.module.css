@@ -698,9 +698,23 @@
   transition: color 0.15s, border-color 0.15s;
 }
 
-.inviteRegenBtn:hover {
+.inviteRegenBtn:hover:not(:disabled) {
   color: var(--text);
   border-color: var(--border-strong);
+}
+
+.inviteRegenBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 0.7s linear infinite;
 }
 
 /* ── Members card ── */
