@@ -259,7 +259,7 @@ function AccessRequests({ canManage }: { canManage: boolean }) {
   )
 }
 
-function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () => Promise<void> }) {
+function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () => Promise<() => void> }) {
   const [copied, setCopied] = useState(false)
   const [regenerating, setRegenerating] = useState(false)
   const [cooldown, setCooldown] = useState(false)
@@ -273,10 +273,13 @@ function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () =>
   async function regen() {
     if (!onRegenerate || regenerating || cooldown) return
     setRegenerating(true)
-    await onRegenerate()
+    const commit = await onRegenerate()
     setRegenerating(false)
     setCooldown(true)
-    setTimeout(() => setCooldown(false), 1000)
+    setTimeout(() => {
+      commit()
+      setCooldown(false)
+    }, 1000)
   }
 
   return (
@@ -298,8 +301,8 @@ function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () =>
         </button>
         {onRegenerate && (
           <button className={styles.inviteRegenBtn} onClick={regen} disabled={regenerating || cooldown}>
-            <IconRefresh size={14} strokeWidth={1.75} className={regenerating ? styles.spinning : undefined} />
-            {regenerating ? 'Genererer...' : 'Ny kode'}
+            <IconRefresh size={14} strokeWidth={1.75} className={(regenerating || cooldown) ? styles.spinning : undefined} />
+            {(regenerating || cooldown) ? 'Genererer...' : 'Ny kode'}
           </button>
         )}
       </div>
@@ -584,17 +587,17 @@ export default function OrganisationPage() {
   const [memberSearch, setMemberSearch] = useState('')
   const [memberRoleFilter, setMemberRoleFilter] = useState('')
 
-  async function handleRegenerate() {
+  async function handleRegenerate(): Promise<() => void> {
     const token = localStorage.getItem('token') ?? ''
     const res = await fetch(`${API_BASE}/api/organisation/update-invitecode`, {
       method: 'PATCH',
       headers: { 'Authorization': `Bearer ${token}` },
     })
-    if (!res.ok) return
+    if (!res.ok) return () => {}
     const data: OrgData | null = await fetch(`${API_BASE}/api/organisation/current-org-data`, {
       headers: { 'Authorization': `Bearer ${token}` },
     }).then(r => r.ok ? r.json() : null)
-    if (data) setOrgData(data)
+    return () => { if (data) setOrgData(data) }
   }
 
   const filteredMembers = [...members]
