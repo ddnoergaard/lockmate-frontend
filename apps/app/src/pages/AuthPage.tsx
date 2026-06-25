@@ -7,7 +7,7 @@ import {
 } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
 import styles from './AuthPage.module.css'
-import { API_BASE } from '../config'
+import { API_BASE, APP_URL } from '../config'
 import { prepareLogin } from '../utils/crypto'
 
 export default function AuthPage() {
@@ -77,10 +77,10 @@ export default function AuthPage() {
             Ét sted til adgangskoder, adgangsnøgler og følsomme data. Bygget til teams der tager sikkerhed seriøst.
           </p>
         </div>
-        <Link to="/" className={styles.backLink}>
+        <a href={APP_URL} className={styles.backLink}>
           <IconArrowNarrowLeft size={14} strokeWidth={2} />
           Tilbage til siden
-        </Link>
+        </a>
       </div>
 
       {/* Form panel */}

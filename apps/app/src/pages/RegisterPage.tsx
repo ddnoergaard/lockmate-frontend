@@ -6,7 +6,7 @@ import {
   IconUser, IconPhone, IconArrowNarrowRight, IconArrowNarrowLeft,
 } from '@tabler/icons-react'
 import logoSrc from '../assets/logo.svg'
-import { API_BASE } from '../config'
+import { API_BASE, APP_URL } from '../config'
 import { prepareRegistration } from '../utils/crypto'
 import styles from './RegisterPage.module.css'
 
@@ -274,10 +274,10 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <Link to="/" className={styles.backLink}>
+        <a href={APP_URL} className={styles.backLink}>
           <IconArrowNarrowLeft size={14} strokeWidth={2} />
           Tilbage til siden
-        </Link>
+        </a>
       </div>
 
     </div>
