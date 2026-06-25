@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import {
   IconBuilding,
   IconKey,
@@ -312,45 +313,63 @@ function InviteCode({ code, onRegenerate }: { code: string; onRegenerate?: () =>
 
 function MemberMenu({ isSelf, role, onRemove, onChangeRole }: { isSelf: boolean; role: string; onRemove: () => void; onChangeRole: () => void }) {
   const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const [pos, setPos] = useState({ top: 0, left: 0 })
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const dropRef = useRef<HTMLDivElement>(null)
 
   if (isSelf) return null
 
   useEffect(() => {
     if (!open) return
-    function handle(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
+    function handleOutside(e: MouseEvent) {
+      if (btnRef.current?.contains(e.target as Node) || dropRef.current?.contains(e.target as Node)) return
+      setOpen(false)
     }
-    document.addEventListener('mousedown', handle)
-    return () => document.removeEventListener('mousedown', handle)
+    function handleScroll() { setOpen(false) }
+    document.addEventListener('mousedown', handleOutside)
+    document.addEventListener('scroll', handleScroll, true)
+    return () => {
+      document.removeEventListener('mousedown', handleOutside)
+      document.removeEventListener('scroll', handleScroll, true)
+    }
   }, [open])
 
+  function toggle() {
+    if (!open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect()
+      setPos({ top: rect.bottom + 4, left: rect.left + rect.width / 2 })
+    }
+    setOpen(v => !v)
+  }
+
   return (
-    <div className={styles.memberMenuWrap} ref={ref}>
+    <div className={styles.memberMenuWrap}>
       <button
+        ref={btnRef}
         className={`${styles.memberMenuBtn} ${open ? styles.memberMenuBtnActive : ''}`}
-        onClick={() => setOpen(v => !v)}
+        onClick={toggle}
         aria-label="Member actions"
       >
         <IconDotsVertical size={15} strokeWidth={1.75} />
       </button>
-      {open && (
-        <div className={styles.memberDropdown}>
-          <button className={styles.memberDropdownItem} onClick={() => { setOpen(false); onChangeRole() }}>
-            <IconPencil size={13} strokeWidth={1.75} />
-            {role === 'Admin' ? 'Gør til Medlem' : 'Gør til Admin'}
-          </button>
-          <div className={styles.memberDropdownDivider} />
-          <button
-            className={`${styles.memberDropdownItem} ${styles.memberDropdownItemDanger}`}
-            onClick={() => { setOpen(false); onRemove() }}
-          >
-            <IconUserX size={13} strokeWidth={1.75} />
-            Fjern medlem
-          </button>
-        </div>
+      {open && createPortal(
+        <div style={{ position: 'fixed', top: pos.top, left: pos.left, transform: 'translateX(-50%)', zIndex: 300 }}>
+          <div ref={dropRef} className={styles.memberDropdown}>
+            <button className={styles.memberDropdownItem} onClick={() => { setOpen(false); onChangeRole() }}>
+              <IconPencil size={13} strokeWidth={1.75} />
+              {role === 'Admin' ? 'Gør til Medlem' : 'Gør til Admin'}
+            </button>
+            <div className={styles.memberDropdownDivider} />
+            <button
+              className={`${styles.memberDropdownItem} ${styles.memberDropdownItemDanger}`}
+              onClick={() => { setOpen(false); onRemove() }}
+            >
+              <IconUserX size={13} strokeWidth={1.75} />
+              Fjern medlem
+            </button>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   )
